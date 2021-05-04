@@ -7,16 +7,16 @@ import com.app.androidjetpack.databinding.ActivityMainBinding
 import com.app.androidjetpack.ui.detail.DetailMovieActivity
 
 class HomeActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        binding.button.setOnClickListener {
-            startActivity(Intent(this,DetailMovieActivity::class.java))
-        }
+        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
+        binding.viewPager.adapter = sectionsPagerAdapter
+        binding.tabs.setupWithViewPager(binding.viewPager)
+
+        supportActionBar?.elevation = 0f
     }
 }

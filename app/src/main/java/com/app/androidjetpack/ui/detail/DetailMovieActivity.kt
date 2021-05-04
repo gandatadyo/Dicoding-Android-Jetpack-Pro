@@ -8,11 +8,14 @@ import com.app.androidjetpack.R
 import com.app.androidjetpack.databinding.ActivityDetailMovieBinding
 
 class DetailMovieActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityDetailMovieBinding
+
+    companion object {
+        const val EXTRA_COURSE = "extra_movie"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDetailMovieBinding.inflate(layoutInflater)
+        val binding = ActivityDetailMovieBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
         setSupportActionBar(findViewById(R.id.toolbar))
