@@ -1,10 +1,10 @@
 package com.app.androidjetpack.data
 
-data class MovieEntity(
-    var courseId: String,
+data class ItemEntity(
+    var itemId: String,
     var title: String,
+    var dateItem: String,
     var description: String,
-    var deadline: String,
     var bookmarked: Boolean = false,
-    var imagePath: String
+    var imagePath: Int
 )

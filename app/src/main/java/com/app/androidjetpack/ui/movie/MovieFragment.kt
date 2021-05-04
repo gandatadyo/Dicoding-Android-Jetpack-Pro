@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.app.androidjetpack.R
 import com.app.androidjetpack.databinding.FragmentMovieBinding
 
 class MovieFragment : Fragment() {
@@ -26,10 +25,10 @@ class MovieFragment : Fragment() {
 
         if (activity != null) {
             val viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[MovieViewModel::class.java]
-            val courses = viewModel.getCourses()
+            val movies = viewModel.getMovies()
 
             val academyAdapter = MovieAdapter()
-            academyAdapter.setCourses(courses)
+            academyAdapter.setCourses(movies)
 
             with(fragmentMovieBinding.rvMovie) {
                 layoutManager = LinearLayoutManager(context)

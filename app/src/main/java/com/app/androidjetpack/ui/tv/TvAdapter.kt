@@ -1,4 +1,4 @@
-package com.app.androidjetpack.ui.movie
+package com.app.androidjetpack.ui.tv
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -9,10 +9,10 @@ import com.app.androidjetpack.databinding.ItemMovieBinding
 import com.app.androidjetpack.ui.detail.DetailMovieActivity
 import java.util.ArrayList
 
-class MovieAdapter: RecyclerView.Adapter<MovieAdapter.CourseViewHolder>()  {
+class TvAdapter: RecyclerView.Adapter<TvAdapter.CourseViewHolder>()  {
     private var listMovies = ArrayList<ItemEntity>()
 
-    fun setCourses(courses: List<ItemEntity>?) {
+    fun setTvs(courses: List<ItemEntity>?) {
         if (courses == null) return
         this.listMovies.clear()
         this.listMovies.addAll(courses)
@@ -31,17 +31,17 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.CourseViewHolder>()  {
     override fun getItemCount(): Int = listMovies.size
 
     class CourseViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ItemEntity) {
+        fun bind(tv: ItemEntity) {
             with(binding) {
-                tvItemTitle.text = item.title
+                tvItemTitle.text = tv.title
 //                tvItemDate.text = itemView.resources.getString(R.string.deadline_date, course.deadline)
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailMovieActivity::class.java)
-                    intent.putExtra(DetailMovieActivity.EXTRA_COURSE, item.itemId)
+                    intent.putExtra(DetailMovieActivity.EXTRA_COURSE, tv.itemId)
                     itemView.context.startActivity(intent)
                 }
-                imgPoster.setImageDrawable(itemView.context.resources.getDrawable(item.imagePath))
             }
         }
     }
+
 }
