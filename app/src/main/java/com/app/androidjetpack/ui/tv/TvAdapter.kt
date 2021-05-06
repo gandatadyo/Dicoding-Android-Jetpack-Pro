@@ -4,42 +4,44 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.app.androidjetpack.R
 import com.app.androidjetpack.data.ItemEntity
 import com.app.androidjetpack.databinding.ItemMovieBinding
-import com.app.androidjetpack.ui.detail.DetailMovieActivity
+import com.app.androidjetpack.ui.detail.DetailItemActivity
 import java.util.ArrayList
 
-class TvAdapter: RecyclerView.Adapter<TvAdapter.CourseViewHolder>()  {
+class TvAdapter: RecyclerView.Adapter<TvAdapter.TvViewHolder>()  {
     private var listMovies = ArrayList<ItemEntity>()
 
-    fun setTvs(courses: List<ItemEntity>?) {
-        if (courses == null) return
+    fun setTvs(items: List<ItemEntity>?) {
+        if (items == null) return
         this.listMovies.clear()
-        this.listMovies.addAll(courses)
+        this.listMovies.addAll(items)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvViewHolder {
         val itemsAcademyBinding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CourseViewHolder(itemsAcademyBinding)
+        return TvViewHolder(itemsAcademyBinding)
     }
 
-    override fun onBindViewHolder(holder: CourseViewHolder, position: Int) {
-        val course = listMovies[position]
-        holder.bind(course)
+    override fun onBindViewHolder(holder: TvViewHolder, position: Int) {
+        val item = listMovies[position]
+        holder.bind(item)
     }
 
     override fun getItemCount(): Int = listMovies.size
 
-    class CourseViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(tv: ItemEntity) {
+    class TvViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: ItemEntity) {
             with(binding) {
-                tvItemTitle.text = tv.title
-//                tvItemDate.text = itemView.resources.getString(R.string.deadline_date, course.deadline)
+                tvItemTitle.text = item.title
+                tvItemDate.text = itemView.resources.getString(R.string.info_date, item.dateItem)
                 itemView.setOnClickListener {
-                    val intent = Intent(itemView.context, DetailMovieActivity::class.java)
-                    intent.putExtra(DetailMovieActivity.EXTRA_COURSE, tv.itemId)
+                    val intent = Intent(itemView.context, DetailItemActivity::class.java)
+                    intent.putExtra(DetailItemActivity.EXTRA_ITEM, item.itemId)
                     itemView.context.startActivity(intent)
                 }
+                imgPoster.setImageDrawable(itemView.context.resources.getDrawable(item.imagePath))
             }
         }
     }

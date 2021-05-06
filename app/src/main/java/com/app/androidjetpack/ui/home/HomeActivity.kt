@@ -1,10 +1,8 @@
 package com.app.androidjetpack.ui.home
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.app.androidjetpack.databinding.ActivityMainBinding
-import com.app.androidjetpack.ui.detail.DetailMovieActivity
 
 class HomeActivity : AppCompatActivity() {
 
