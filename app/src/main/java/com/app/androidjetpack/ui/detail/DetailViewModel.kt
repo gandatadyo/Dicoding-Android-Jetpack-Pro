@@ -11,11 +11,19 @@ class DetailViewModel :ViewModel() {
         this.itemId = itemId
     }
 
-    fun getData(): ItemEntity? {
+    fun getData(mode:String): ItemEntity? {
         var item: ItemEntity? = null
-        for (itemsEntity in DataDummy.generateDummyMovie()) {
-            if (itemsEntity.itemId == itemId) {
-                item = itemsEntity
+        if(mode=="movie") {
+            for (itemsEntity in DataDummy.generateDummyMovie()) {
+                if (itemsEntity.itemId == itemId) {
+                    item = itemsEntity
+                }
+            }
+        }else if(mode=="tv") {
+            for (itemsEntity in DataDummy.generateDummyTvs()) {
+                if (itemsEntity.itemId == itemId) {
+                    item = itemsEntity
+                }
             }
         }
         return item

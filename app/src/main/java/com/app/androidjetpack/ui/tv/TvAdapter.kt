@@ -36,12 +36,13 @@ class TvAdapter: RecyclerView.Adapter<TvAdapter.TvViewHolder>()  {
             with(binding) {
                 tvItemTitle.text = item.title
                 tvItemDate.text = itemView.resources.getString(R.string.info_date, item.dateItem)
+                imgPoster.setImageDrawable(itemView.context.resources.getDrawable(item.imagePath))
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailItemActivity::class.java)
                     intent.putExtra(DetailItemActivity.EXTRA_ITEM, item.itemId)
+                    intent.putExtra(DetailItemActivity.EXTRA_MODE, "tv")
                     itemView.context.startActivity(intent)
                 }
-                imgPoster.setImageDrawable(itemView.context.resources.getDrawable(item.imagePath))
             }
         }
     }

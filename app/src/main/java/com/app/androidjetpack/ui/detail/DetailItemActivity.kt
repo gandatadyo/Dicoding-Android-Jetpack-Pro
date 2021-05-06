@@ -14,6 +14,7 @@ class DetailItemActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_ITEM = "extra_detail_item"
+        const val EXTRA_MODE = "extra_detail_mode"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,9 +33,10 @@ class DetailItemActivity : AppCompatActivity() {
         val extras = intent.extras
         if (extras != null) {
             val itemId = extras.getString(EXTRA_ITEM)
-            if (itemId != null) {
+            val mode = extras.getString(EXTRA_MODE)
+            if (itemId != null && mode != null) {
                 viewModel.setSelectedData(itemId)
-                populateItem(viewModel.getData() as ItemEntity)
+                populateItem(viewModel.getData(mode) as ItemEntity)
             }
         }
     }
