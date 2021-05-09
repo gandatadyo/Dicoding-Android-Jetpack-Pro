@@ -36,6 +36,11 @@ class DetailItemActivity : AppCompatActivity() {
             val mode = extras.getString(EXTRA_MODE)
             if (itemId != null && mode != null) {
                 viewModel.setSelectedData(itemId)
+                if(mode=="movie"){
+                    supportActionBar?.title = "Detail Movie"
+                }else if(mode=="tv"){
+                    supportActionBar?.title = "Detail TV"
+                }
                 populateItem(viewModel.getData(mode) as ItemEntity)
             }
         }

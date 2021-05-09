@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Android Jetpack</string>
+    <string name="app_name">Aplikasi Movie dan TV</string>
     <string name="title_activity_detail_movie">DetailMovieActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

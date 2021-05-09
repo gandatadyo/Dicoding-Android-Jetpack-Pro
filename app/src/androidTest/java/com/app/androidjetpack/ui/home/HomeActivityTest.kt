@@ -49,5 +49,7 @@ class HomeActivityTest {
         onView(withId(R.id.text_title)).check(matches(withText(dummyTvs[0].title)))
         onView(withId(R.id.text_date)).check(matches(isDisplayed()))
         onView(withId(R.id.text_date)).check(matches(withText("Tanggal Rilis ${dummyTvs[0].dateItem}")))
+        onView(withId(R.id.text_description)).check(matches(isDisplayed()))
+        onView(withId(R.id.text_description)).check(matches(withText(dummyTvs[0].description)))
     }
 }

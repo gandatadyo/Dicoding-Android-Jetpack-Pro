@@ -20,7 +20,7 @@ class DetailViewModelTest {
     @Test
     fun getDetail() {
         viewModel.setSelectedData(dummyItem.itemId)
-        val dataEntity = viewModel.getData()
+        val dataEntity = viewModel.getData("movie")
         assertNotNull(dataEntity)
         if(dataEntity!=null) {
             assertEquals(dummyItem.itemId, dataEntity.itemId)
