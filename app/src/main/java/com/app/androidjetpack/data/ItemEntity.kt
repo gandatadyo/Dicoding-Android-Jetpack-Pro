@@ -5,6 +5,5 @@ data class ItemEntity(
     var title: String,
     var dateItem: String,
     var description: String,
-    var bookmarked: Boolean = false,
     var imagePath: Int
 )

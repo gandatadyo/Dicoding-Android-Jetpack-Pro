@@ -1,5 +1,6 @@
 package com.app.androidjetpack.ui.detail
 
+import com.app.androidjetpack.data.ItemEntity
 import com.app.androidjetpack.utils.DataDummy
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
@@ -20,14 +21,12 @@ class DetailViewModelTest {
     @Test
     fun getDetail() {
         viewModel.setSelectedData(dummyItem.itemId)
-        val dataEntity = viewModel.getData()
+        val dataEntity = viewModel.getData("movie")
         assertNotNull(dataEntity)
-        if(dataEntity!=null) {
-            assertEquals(dummyItem.itemId, dataEntity.itemId)
-            assertEquals(dummyItem.title, dataEntity.title)
-            assertEquals(dummyItem.dateItem, dataEntity.dateItem)
-            assertEquals(dummyItem.description, dataEntity.description)
-            assertEquals(dummyItem.imagePath, dataEntity.imagePath)
-        }
+        assertEquals(dummyItem.itemId, dataEntity?.itemId)
+        assertEquals(dummyItem.title, dataEntity?.title)
+        assertEquals(dummyItem.dateItem, dataEntity?.dateItem)
+        assertEquals(dummyItem.description, dataEntity?.description)
+        assertEquals(dummyItem.imagePath, dataEntity?.imagePath)
     }
 }
