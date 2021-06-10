@@ -1,6 +1,7 @@
 package com.app.androidjetpack.utils
 
 import android.content.Context
+import com.app.androidjetpack.data.source.remote.response.ItemEntityResponse
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -22,8 +23,8 @@ class JsonHelper(private val context: Context) {
         }
     }
 
-    fun loadCourses(): List<CourseResponse> {
-        val list = ArrayList<CourseResponse>()
+    fun loadCourses(): List<ItemEntityResponse> {
+        val list = ArrayList<ItemEntityResponse>()
         try {
             val responseObject = JSONObject(parsingFileToString("CourseResponses.json").toString())
             val listArray = responseObject.getJSONArray("courses")
@@ -36,8 +37,8 @@ class JsonHelper(private val context: Context) {
                 val date = course.getString("date")
                 val imagePath = course.getString("imagePath")
 
-                val courseResponse = CourseResponse(id, title, description, date, imagePath)
-                list.add(courseResponse)
+//                val courseResponse = ItemEntityResponse(id, title, description, date, 0)
+//                list.add(courseResponse)
             }
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -45,44 +46,44 @@ class JsonHelper(private val context: Context) {
         return list
     }
 
-    fun loadModule(courseId: String): List<ModuleResponse> {
-        val fileName = String.format("Module_%s.json", courseId)
-        val list = ArrayList<ModuleResponse>()
-        try {
-            val result = parsingFileToString(fileName)
-            if (result != null) {
-                val responseObject = JSONObject(result)
-                val listArray = responseObject.getJSONArray("modules")
-                for (i in 0 until listArray.length()) {
-                    val course = listArray.getJSONObject(i)
+//    fun loadModule(courseId: String): List<ItemEntityResponse> {
+//        val fileName = String.format("Module_%s.json", courseId)
+//        val list = ArrayList<ItemEntityResponse>()
+//        try {
+//            val result = parsingFileToString(fileName)
+//            if (result != null) {
+//                val responseObject = JSONObject(result)
+//                val listArray = responseObject.getJSONArray("modules")
+//                for (i in 0 until listArray.length()) {
+//                    val course = listArray.getJSONObject(i)
+//
+//                    val moduleId = course.getString("moduleId")
+//                    val title = course.getString("title")
+//                    val position = course.getString("position")
+//
+////                    val courseResponse = ItemEntityResponse(moduleId, courseId, title, Integer.parseInt(position))
+////                    list.add(courseResponse)
+//                }
+//            }
+//        } catch (e: JSONException) {
+//            e.printStackTrace()
+//        }
+//        return list
+//    }
 
-                    val moduleId = course.getString("moduleId")
-                    val title = course.getString("title")
-                    val position = course.getString("position")
-
-                    val courseResponse = ModuleResponse(moduleId, courseId, title, Integer.parseInt(position))
-                    list.add(courseResponse)
-                }
-            }
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-        return list
-    }
-
-    fun loadContent(moduleId: String): ContentResponse {
-        val fileName = String.format("Content_%s.json", moduleId)
-        var contentResponse: ContentResponse? = null
-        try {
-            val result = parsingFileToString(fileName)
-            if (result != null) {
-                val responseObject = JSONObject(result)
-                val content = responseObject.getString("content")
-                contentResponse = ContentResponse(moduleId, content)
-            }
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-        return contentResponse as ContentResponse
-    }
+//    fun loadContent(moduleId: String): ContentResponse {
+//        val fileName = String.format("Content_%s.json", moduleId)
+//        var contentResponse: ContentResponse? = null
+//        try {
+//            val result = parsingFileToString(fileName)
+//            if (result != null) {
+//                val responseObject = JSONObject(result)
+//                val content = responseObject.getString("content")
+//                contentResponse = ContentResponse(moduleId, content)
+//            }
+//        } catch (e: JSONException) {
+//            e.printStackTrace()
+//        }
+//        return contentResponse as ContentResponse
+//    }
 }
