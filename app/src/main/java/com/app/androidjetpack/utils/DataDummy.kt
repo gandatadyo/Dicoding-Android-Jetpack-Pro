@@ -1,7 +1,7 @@
 package com.app.androidjetpack.utils
 
 import com.app.androidjetpack.R
-import com.app.androidjetpack.data.ItemEntity
+import com.app.androidjetpack.data.source.local.entity.ItemEntity
 import java.util.ArrayList
 
 object DataDummy {

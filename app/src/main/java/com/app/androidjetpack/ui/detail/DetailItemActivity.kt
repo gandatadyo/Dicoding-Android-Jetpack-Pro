@@ -1,11 +1,10 @@
 package com.app.androidjetpack.ui.detail
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.app.androidjetpack.R
-import com.app.androidjetpack.data.ItemEntity
+import com.app.androidjetpack.data.source.local.entity.ItemEntity
 import com.app.androidjetpack.databinding.ActivityDetailItemBinding
 import com.app.androidjetpack.databinding.ContentDetailBinding
 

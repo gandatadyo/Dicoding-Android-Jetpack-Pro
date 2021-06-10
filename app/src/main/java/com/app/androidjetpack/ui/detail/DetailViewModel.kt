@@ -1,7 +1,7 @@
 package com.app.androidjetpack.ui.detail
 
 import androidx.lifecycle.ViewModel
-import com.app.androidjetpack.data.ItemEntity
+import com.app.androidjetpack.data.source.local.entity.ItemEntity
 import com.app.androidjetpack.utils.DataDummy
 
 class DetailViewModel :ViewModel() {

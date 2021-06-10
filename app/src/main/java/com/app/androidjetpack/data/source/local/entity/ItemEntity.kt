@@ -1,4 +1,4 @@
-package com.app.androidjetpack.data
+package com.app.androidjetpack.data.source.local.entity
 
 data class ItemEntity(
     var itemId: String,
