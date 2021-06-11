@@ -1,0 +1,39 @@
+{
+  "courses": [
+    {
+      "itemId": "a1",
+      "title": "A Star Is Born",
+      "description": "Seorang bintang musik country yang karirnya mulai memudar, Jackson Maine (Bradley Cooper) menemukan sebuah talenta yang sangat berbakat di dalam diri dari seorang musisi muda bernama Ally (Lady Gaga). Maine berhasil mengorbitkan Ally menjadi seorang bintang muda yang menjanjikan. Namun keduanya terlibat hubungan yang lebih jauh dari sekedar mentor dan anak didik. Seiring dengan meroketnya karir dari Ally dan dirinya, Maine mengalami dilema mengenai masalah ini",
+      "dateItem": "Oktober 3, 2018",
+      "imagePath": "https://www.dicoding.com/images/small/academy/menjadi_android_developer_expert_logo_070119140352.jpg"
+    },
+    {
+      "itemId": "a2",
+      "title": "Alita",
+      "description": "Ketika Alita terbangun tanpa ingatan tentang siapa dia di dunia masa depan yang tidak dia kenal, dia ditangkap oleh Ido, seorang dokter yang penuh kasih yang menyadari bahwa di suatu tempat dalam cangkang cyborg yang ditinggalkan ini adalah hati dan jiwa seorang wanita muda dengan luar biasa. lalu.",
+      "dateItem": "Januari 31, 2019",
+      "imagePath": "https://www.dicoding.com/images/small/academy/kotlin_android_developer_expert_logo_070119140227.jpg"
+    },
+    {
+      "itemId": "a3",
+      "title": "Aquaman",
+      "description": "Once home to the most advanced civilization on Earth, Atlantis is now an underwater kingdom ruled by the power-hungry King Orm. With a vast army at his disposal, Orm plans to conquer the remaining oceanic people and then the surface world. Standing in his way is Arthur Curry, Orm's half-human, half-Atlantean brother and true heir to the throne.",
+      "dateItem": "Desember 7, 2018",
+      "imagePath": "https://www.dicoding.com/images/small/academy/menjadi_game_developer_expert_logo_070119140532.jpg"
+    },
+    {
+      "itemId": "a4",
+      "title": "Bohemian",
+      "description": "Singer Freddie Mercury, guitarist Brian May, drummer Roger Taylor and bass guitarist John Deacon take the music world by storm when they form the rock 'n' roll band Queen in 1970. Hit songs become instant classics. When Mercury's increasingly wild lifestyle starts to spiral out of control, Queen soon faces its greatest challenge yet – finding a way to keep the band together amid the success and excess.",
+      "dateItem": "Oktober 24, 2018",
+      "imagePath": "https://www.dicoding.com/images/small/academy/membangun_progressive_web_apps_logo_070119142922.jpg"
+    },
+    {
+      "itemId": "a5",
+      "title": "Cold Pursuit",
+      "description": "Cold Pursuit\",\"Februari 7, 2019\",\"he quiet family life of Nels Coxman, a snowplow driver, is upended after his son's murder. Nels begins a vengeful hunt for Viking, the drug lord he holds responsible for the killing, eliminating Viking's associates one by one. As Nels draws closer to Viking, his actions bring even more unexpected and violent consequences, as he proves that revenge is all in the execution.",
+      "dateItem": "Februari 7, 2019",
+      "imagePath": "https://www.dicoding.com/images/small/academy/belajar_membuat_aplikasi_android_untuk_pemula_logo_070119140911.jpg"
+    }
+  ]
+}

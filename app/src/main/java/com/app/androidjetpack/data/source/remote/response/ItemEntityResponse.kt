@@ -9,5 +9,5 @@ data class ItemEntityResponse(
     var title: String,
     var description: String,
     var date: String,
-    var imagePath: String
+    var imagePath: Int
 ): Parcelable

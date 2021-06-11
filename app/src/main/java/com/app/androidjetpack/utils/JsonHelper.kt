@@ -1,6 +1,7 @@
 package com.app.androidjetpack.utils
 
 import android.content.Context
+import com.app.androidjetpack.R
 import com.app.androidjetpack.data.source.remote.response.ItemEntityResponse
 import org.json.JSONException
 import org.json.JSONObject
@@ -23,7 +24,7 @@ class JsonHelper(private val context: Context) {
         }
     }
 
-    fun loadCourses(): List<ItemEntityResponse> {
+    fun loadMovies(): List<ItemEntityResponse> {
         val list = ArrayList<ItemEntityResponse>()
         try {
             val responseObject = JSONObject(parsingFileToString("CourseResponses.json").toString())
@@ -31,59 +32,17 @@ class JsonHelper(private val context: Context) {
             for (i in 0 until listArray.length()) {
                 val course = listArray.getJSONObject(i)
 
-                val id = course.getString("id")
+                val id = course.getString("itemId")
                 val title = course.getString("title")
                 val description = course.getString("description")
-                val date = course.getString("date")
-                val imagePath = course.getString("imagePath")
+                val date = course.getString("dateItem")
 
-//                val courseResponse = ItemEntityResponse(id, title, description, date, 0)
-//                list.add(courseResponse)
+                val courseResponse = ItemEntityResponse(id, title, description, date, R.drawable.poster_arrow)
+                list.add(courseResponse)
             }
         } catch (e: JSONException) {
             e.printStackTrace()
         }
         return list
     }
-
-//    fun loadModule(courseId: String): List<ItemEntityResponse> {
-//        val fileName = String.format("Module_%s.json", courseId)
-//        val list = ArrayList<ItemEntityResponse>()
-//        try {
-//            val result = parsingFileToString(fileName)
-//            if (result != null) {
-//                val responseObject = JSONObject(result)
-//                val listArray = responseObject.getJSONArray("modules")
-//                for (i in 0 until listArray.length()) {
-//                    val course = listArray.getJSONObject(i)
-//
-//                    val moduleId = course.getString("moduleId")
-//                    val title = course.getString("title")
-//                    val position = course.getString("position")
-//
-////                    val courseResponse = ItemEntityResponse(moduleId, courseId, title, Integer.parseInt(position))
-////                    list.add(courseResponse)
-//                }
-//            }
-//        } catch (e: JSONException) {
-//            e.printStackTrace()
-//        }
-//        return list
-//    }
-
-//    fun loadContent(moduleId: String): ContentResponse {
-//        val fileName = String.format("Content_%s.json", moduleId)
-//        var contentResponse: ContentResponse? = null
-//        try {
-//            val result = parsingFileToString(fileName)
-//            if (result != null) {
-//                val responseObject = JSONObject(result)
-//                val content = responseObject.getString("content")
-//                contentResponse = ContentResponse(moduleId, content)
-//            }
-//        } catch (e: JSONException) {
-//            e.printStackTrace()
-//        }
-//        return contentResponse as ContentResponse
-//    }
 }
