@@ -3,6 +3,7 @@ buildscript {
     ext {
         kotlin_version = "1.4.32"
         espressoVersion = '3.1.0'
+        retrofitVersion = "2.9.0"
     }
     repositories {
         google()
