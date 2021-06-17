@@ -25,12 +25,14 @@ class MovieFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-            val factory = ViewModelFactory.getInstance(requireActivity())
-            val viewModel = ViewModelProvider(this, factory)[AcademyViewModel::class.java]
-            val movies = viewModel.getMovies()
+            val factory = ViewModelFactory.getInstance()
+            val viewModel = ViewModelProvider(this,factory)[MovieDataViewModel::class.java]
 
             val academyAdapter = MovieAdapter()
-            academyAdapter.setMovies(movies)
+            viewModel.getMovies().observe(requireActivity(), { movies ->
+                academyAdapter.setMovies(movies)
+                academyAdapter.notifyDataSetChanged()
+            })
 
             with(fragmentMovieBinding.rvMovie) {
                 layoutManager = LinearLayoutManager(context)

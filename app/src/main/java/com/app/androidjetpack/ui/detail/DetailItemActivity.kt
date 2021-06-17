@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.app.androidjetpack.R
-import com.app.androidjetpack.data.source.local.entity.ItemEntity
 import com.app.androidjetpack.databinding.ActivityDetailItemBinding
 import com.app.androidjetpack.databinding.ContentDetailBinding
 
@@ -40,16 +39,16 @@ class DetailItemActivity : AppCompatActivity() {
                 }else if(mode=="tv"){
                     supportActionBar?.title = "Detail TV"
                 }
-                populateItem(viewModel.getData(mode) as ItemEntity)
+//                populateItem(viewModel.getData(mode) as ItemEntity)
             }
         }
     }
 
 
-    private fun populateItem(item: ItemEntity) {
-        detailContentBinding.textTitle.text = item.title
-        detailContentBinding.textDescription.text = item.description
-        detailContentBinding.textDate.text = resources.getString(R.string.info_date, item.dateItem)
-        detailContentBinding.imagePoster.setImageDrawable(resources.getDrawable(item.imagePath))
-    }
+//    private fun populateItem(item: ItemEntity) {
+//        detailContentBinding.textTitle.text = item.title
+//        detailContentBinding.textDescription.text = item.description
+//        detailContentBinding.textDate.text = resources.getString(R.string.info_date, item.dateItem)
+//        detailContentBinding.imagePoster.setImageDrawable(resources.getDrawable(item.imagePath))
+//    }
 }

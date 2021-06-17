@@ -1,13 +1,15 @@
 package com.app.androidjetpack.di
 
 import android.content.Context
-import com.app.androidjetpack.data.AcademyRepository
-import com.app.androidjetpack.data.source.remote.RemoteDataSource
-import com.app.androidjetpack.utils.JsonHelper
+import com.app.androidjetpack.data.MyRepository
+import com.app.androidjetpack.data.remote.RemoteDataSource
+import com.app.androidjetpack.utils.ModulRestapi
 
 object Injection {
-    fun provideRepository(context: Context): AcademyRepository {
-        val remoteRepository = RemoteDataSource.getInstance(JsonHelper(context))
-        return AcademyRepository.getInstance(remoteRepository)
+
+    fun provideRepository(): MyRepository {
+        val remoteRepository = RemoteDataSource.getInstance(ModulRestapi())
+        return MyRepository.getInstance(remoteRepository)
     }
+
 }

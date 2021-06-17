@@ -1,6 +1,5 @@
 package com.app.androidjetpack.ui.detail
 
-import com.app.androidjetpack.utils.DataDummy
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
 import org.junit.Before

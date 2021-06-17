@@ -3,29 +3,29 @@ package com.app.androidjetpack.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.app.androidjetpack.data.AcademyRepository
+import com.app.androidjetpack.data.MyRepository
 import com.app.androidjetpack.di.Injection
-import com.app.androidjetpack.ui.movie.AcademyViewModel
+import com.app.androidjetpack.ui.movie.MovieDataViewModel
 
-class ViewModelFactory private constructor(private val mAcademyRepository: AcademyRepository) : ViewModelProvider.NewInstanceFactory() {
-
+class ViewModelFactory private constructor(private val myRepository: MyRepository) : ViewModelProvider.NewInstanceFactory() {
     companion object {
         @Volatile
         private var instance: ViewModelFactory? = null
 
-        fun getInstance(context: Context): ViewModelFactory =
+        fun getInstance(): ViewModelFactory =
             instance ?: synchronized(this) {
-                ViewModelFactory(Injection.provideRepository(context)).apply { instance = this }
+                ViewModelFactory(Injection.provideRepository()).apply { instance = this }
             }
     }
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
-            modelClass.isAssignableFrom(AcademyViewModel::class.java) -> {
-                AcademyViewModel(mAcademyRepository) as T
+            modelClass.isAssignableFrom(MovieDataViewModel::class.java) -> {
+                MovieDataViewModel(myRepository) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }
     }
+
 }

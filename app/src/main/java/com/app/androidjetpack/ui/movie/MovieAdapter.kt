@@ -5,15 +5,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.androidjetpack.R
-import com.app.androidjetpack.data.source.local.entity.ItemEntity
+import com.app.androidjetpack.data.entity.MovieEntity
 import com.app.androidjetpack.databinding.ItemMovieBinding
 import com.app.androidjetpack.ui.detail.DetailItemActivity
 import java.util.ArrayList
 
 class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>()  {
-    private var listMovies = ArrayList<ItemEntity>()
+    private var listMovies = ArrayList<MovieEntity>()
 
-    fun setMovies(items: List<ItemEntity>?) {
+    fun setMovies(items: List<MovieEntity>?) {
         if (items == null) return
         this.listMovies.clear()
         this.listMovies.addAll(items)
@@ -32,14 +32,14 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>()  {
     override fun getItemCount(): Int = listMovies.size
 
     class MovieViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ItemEntity) {
+        fun bind(item: MovieEntity) {
             with(binding) {
-                tvItemTitle.text = item.title
-                tvItemDate.text = itemView.resources.getString(R.string.info_date, item.dateItem)
-                imgPoster.setImageDrawable(itemView.context.resources.getDrawable(item.imagePath))
+                tvItemTitle.text = item.titleMovie
+                tvItemDate.text = itemView.resources.getString(R.string.info_date, item.dateMovie)
+//                imgPoster.setImageDrawable(itemView.context.resources.getDrawable(item.imagePath))
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailItemActivity::class.java)
-                    intent.putExtra(DetailItemActivity.EXTRA_ITEM, item.itemId)
+                    intent.putExtra(DetailItemActivity.EXTRA_ITEM, item.id)
                     intent.putExtra(DetailItemActivity.EXTRA_MODE, "movie")
                     itemView.context.startActivity(intent)
                 }
