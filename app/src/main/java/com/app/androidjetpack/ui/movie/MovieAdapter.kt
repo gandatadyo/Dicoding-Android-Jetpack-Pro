@@ -8,6 +8,7 @@ import com.app.androidjetpack.R
 import com.app.androidjetpack.data.entity.MovieEntity
 import com.app.androidjetpack.databinding.ItemMovieBinding
 import com.app.androidjetpack.ui.detail.DetailItemActivity
+import com.bumptech.glide.Glide
 import java.util.ArrayList
 
 class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>()  {
@@ -36,6 +37,7 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>()  {
             with(binding) {
                 tvItemTitle.text = item.titleMovie
                 tvItemDate.text = itemView.resources.getString(R.string.info_date, item.dateMovie)
+                Glide.with(itemView.context).load(item.imgMovie).into(imgPoster)
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailItemActivity::class.java)
                     intent.putExtra(DetailItemActivity.EXTRA_ITEM, item.id)
