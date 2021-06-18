@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.androidjetpack.databinding.FragmentTvBinding
+import com.app.androidjetpack.utils.EspressoIdlingResource
 import com.app.androidjetpack.viewmodel.ViewModelFactory
 
 class TvFragment : Fragment() {
@@ -29,9 +30,14 @@ class TvFragment : Fragment() {
             val viewModel = ViewModelProvider(this,factory)[TvDataViewModel::class.java]
 
             val academyAdapter = TvAdapter()
+            EspressoIdlingResource.increment()
             viewModel.getTV().observe(requireActivity(), { movies ->
                 academyAdapter.setTvs(movies)
                 academyAdapter.notifyDataSetChanged()
+                if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
+                    //Memberitahukan bahwa tugas sudah selesai dijalankan
+                    EspressoIdlingResource.decrement()
+                }
             })
 
             with(fragmentTvBinding.rvTv) {

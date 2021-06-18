@@ -62,12 +62,49 @@ class RemoteDataSource private constructor(private val modulRestapi: ModulRestap
         })
     }
 
+    fun getDetailMovie(idtv:String,callback: LoadDetailMovieCallback){
+        modulRestapi.requestHttp("/3/movie/${idtv}",{
+            val item = MovieEntity(
+                idtv,
+                JSONObject(it).getString("original_title"),
+                JSONObject(it).getString("release_date"),
+                JSONObject(it).getString("overview"),
+                JSONObject(it).getString("poster_path")
+            )
+            callback.onDetailMovieReceived(item)
+        },{
+            Log.d("test","error") // nothing
+        })
+    }
+
+    fun getDetailTv(idtv:String,callback: LoadDetailTvCallback){
+        modulRestapi.requestHttp("/3/tv/${idtv}",{
+            callback.onDetailTvReceived(TvEntity(
+                idtv,
+                JSONObject(it).getString("original_name"),
+                JSONObject(it).getString("first_air_date"),
+                JSONObject(it).getString("overview"),
+                JSONObject(it).getString("poster_path")
+            ))
+        },{
+            Log.d("test","error") // nothing
+        })
+    }
+
     interface LoadAllMovieCallback {
         fun onAllMoviesReceived(moviesResponses: List<MovieEntity>)
     }
 
     interface LoadAllTvCallback {
         fun onAllTvsReceived(tvsResponses: List<TvEntity>)
+    }
+
+    interface LoadDetailMovieCallback {
+        fun onDetailMovieReceived(tvsResponses: MovieEntity)
+    }
+
+    interface LoadDetailTvCallback {
+        fun onDetailTvReceived(tvsResponses: TvEntity)
     }
 
 }

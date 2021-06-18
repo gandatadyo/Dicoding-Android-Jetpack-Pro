@@ -33,11 +33,12 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>()  {
     override fun getItemCount(): Int = listMovies.size
 
     class MovieViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
+        private val urlimg = "https://image.tmdb.org/t/p/original"
         fun bind(item: MovieEntity) {
             with(binding) {
                 tvItemTitle.text = item.titleMovie
                 tvItemDate.text = itemView.resources.getString(R.string.info_date, item.dateMovie)
-                Glide.with(itemView.context).load(item.imgMovie).into(imgPoster)
+                Glide.with(itemView.context).load(urlimg+item.imgMovie).into(imgPoster)
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailItemActivity::class.java)
                     intent.putExtra(DetailItemActivity.EXTRA_ITEM, item.id)

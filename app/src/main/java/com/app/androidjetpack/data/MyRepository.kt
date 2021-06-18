@@ -41,15 +41,14 @@ class MyRepository private constructor(private val remoteDataSource: RemoteDataS
         return movieResult
     }
 
-    override fun getDetailMovie():MovieEntity{
-        val movie = MovieEntity(
-            "test",
-            "test",
-            "test",
-            "test",
-            "test"
-        )
-        return movie
+    override fun getDetailMovie(idmovie:String):LiveData<MovieEntity>{
+        val movieResult = MutableLiveData<MovieEntity>()
+        remoteDataSource.getDetailMovie(idmovie,object :RemoteDataSource.LoadDetailMovieCallback{
+            override fun onDetailMovieReceived(tvsResponses: MovieEntity) {
+                movieResult.postValue(tvsResponses)
+            }
+        })
+        return movieResult
     }
 
     override fun getAllTv():LiveData<List<TvEntity>>{
@@ -74,14 +73,14 @@ class MyRepository private constructor(private val remoteDataSource: RemoteDataS
         return tvResult
     }
 
-    override fun getDetailTV():TvEntity{
-        val tv = TvEntity(
-            "test",
-            "test",
-            "test",
-            "test",
-            "test"
-        )
-        return tv
+    override fun getDetailTV(idtv:String):LiveData<TvEntity>{
+        val tvResult = MutableLiveData<TvEntity>()
+        remoteDataSource.getDetailTv(idtv,object :RemoteDataSource.LoadDetailTvCallback{
+            override fun onDetailTvReceived(tvsResponses: TvEntity) {
+                tvResult.postValue(tvsResponses)
+            }
+        })
+        return tvResult
     }
+
 }

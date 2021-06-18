@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.androidjetpack.databinding.FragmentMovieBinding
+import com.app.androidjetpack.utils.EspressoIdlingResource
 import com.app.androidjetpack.viewmodel.ViewModelFactory
 
 class MovieFragment : Fragment() {
@@ -32,12 +33,12 @@ class MovieFragment : Fragment() {
             val academyAdapter = MovieAdapter()
             EspressoIdlingResource.increment()
             viewModel.getMovies().observe(requireActivity(), { movies ->
+                academyAdapter.setMovies(movies)
+                academyAdapter.notifyDataSetChanged()
                 if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
                     //Memberitahukan bahwa tugas sudah selesai dijalankan
                     EspressoIdlingResource.decrement()
                 }
-                academyAdapter.setMovies(movies)
-                academyAdapter.notifyDataSetChanged()
             })
 
             with(fragmentMovieBinding.rvMovie) {
