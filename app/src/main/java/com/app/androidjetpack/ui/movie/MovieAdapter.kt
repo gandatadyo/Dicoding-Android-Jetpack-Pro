@@ -36,7 +36,6 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>()  {
             with(binding) {
                 tvItemTitle.text = item.titleMovie
                 tvItemDate.text = itemView.resources.getString(R.string.info_date, item.dateMovie)
-//                imgPoster.setImageDrawable(itemView.context.resources.getDrawable(item.imagePath))
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailItemActivity::class.java)
                     intent.putExtra(DetailItemActivity.EXTRA_ITEM, item.id)

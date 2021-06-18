@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.androidjetpack.databinding.FragmentTvBinding
+import com.app.androidjetpack.viewmodel.ViewModelFactory
 
 class TvFragment : Fragment() {
     private lateinit var fragmentTvBinding: FragmentTvBinding
@@ -22,17 +25,20 @@ class TvFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-//            val viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[TvViewModel::class.java]
-//            val tvs = viewModel.getTvs()
-//
-//            val academyAdapter = TvAdapter()
-//            academyAdapter.setTvs(tvs)
-//
-//            with(fragmentTvBinding.rvTv) {
-//                layoutManager = LinearLayoutManager(context)
-//                setHasFixedSize(true)
-//                adapter = academyAdapter
-//            }
+            val factory = ViewModelFactory.getInstance()
+            val viewModel = ViewModelProvider(this,factory)[TvDataViewModel::class.java]
+
+            val academyAdapter = TvAdapter()
+            viewModel.getTV().observe(requireActivity(), { movies ->
+                academyAdapter.setTvs(movies)
+                academyAdapter.notifyDataSetChanged()
+            })
+
+            with(fragmentTvBinding.rvTv) {
+                layoutManager = LinearLayoutManager(context)
+                setHasFixedSize(true)
+                adapter = academyAdapter
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ interface MyDataSource {
 
     fun getDetailMovie(): MovieEntity
 
-    fun getAllTv(): List<TvEntity>
+    fun getAllTv(): LiveData<List<TvEntity>>
 
     fun getDetailTV(): TvEntity
 

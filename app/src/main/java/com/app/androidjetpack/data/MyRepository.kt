@@ -1,6 +1,5 @@
 package com.app.androidjetpack.data
 
-import android.graphics.Movie
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.app.androidjetpack.data.entity.MovieEntity
@@ -22,9 +21,9 @@ class MyRepository private constructor(private val remoteDataSource: RemoteDataS
     override fun getAllMovie():LiveData<List<MovieEntity>> {
         val movieResult = MutableLiveData<List<MovieEntity>>()
         remoteDataSource.getAllMovies(object :RemoteDataSource.LoadAllMovieCallback{
-            override fun onAllCoursesReceived(moviesResponse: List<MovieEntity>) {
+            override fun onAllMoviesReceived(moviesResponses: List<MovieEntity>) {
                 val movieList = ArrayList<MovieEntity>()
-                for(response in moviesResponse){
+                for(response in moviesResponses){
                     movieList.add(
                         MovieEntity(
                             response.id,
@@ -53,9 +52,26 @@ class MyRepository private constructor(private val remoteDataSource: RemoteDataS
         return movie
     }
 
-    override fun getAllTv():List<TvEntity>{
-        val tv = ArrayList<TvEntity>()
-        return tv
+    override fun getAllTv():LiveData<List<TvEntity>>{
+        val tvResult = MutableLiveData<List<TvEntity>>()
+        remoteDataSource.getAllTv(object :RemoteDataSource.LoadAllTvCallback{
+            override fun onAllTvsReceived(tvsResponses: List<TvEntity>) {
+                val tvlist = ArrayList<TvEntity>()
+                for(response in tvsResponses){
+                    tvlist.add(
+                        TvEntity(
+                            response.id,
+                            response.titleTv,
+                            response.dateTv,
+                            response.descTv,
+                            response.imgTv,
+                        )
+                    )
+                }
+                tvResult.postValue(tvlist)
+            }
+        })
+        return tvResult
     }
 
     override fun getDetailTV():TvEntity{
