@@ -8,6 +8,6 @@ import com.app.androidjetpack.data.source.local.ItemEntity
 
 class MovieViewModel(private val myRepository: MyRepository): ViewModel() {
 
-    fun getMovies(): LiveData<List<ItemResponseEntity>> = myRepository.getAllMovie()
+    fun getMovies(): LiveData<List<ItemEntity>> = myRepository.getAllMovie()
 
 }

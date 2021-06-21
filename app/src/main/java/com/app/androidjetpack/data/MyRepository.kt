@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.app.androidjetpack.data.remote.RemoteDataSource
 import com.app.androidjetpack.data.remote.response.ItemResponseEntity
+import com.app.androidjetpack.data.source.local.ItemEntity
 
 class MyRepository private constructor(private val remoteDataSource: RemoteDataSource):MyDataSource {
 
@@ -17,19 +18,19 @@ class MyRepository private constructor(private val remoteDataSource: RemoteDataS
             }
     }
 
-    override fun getAllMovie():LiveData<List<ItemResponseEntity>> {
-        val movieResult = MutableLiveData<List<ItemResponseEntity>>()
+    override fun getAllMovie():LiveData<List<ItemEntity>> {
+        val movieResult = MutableLiveData<List<ItemEntity>>()
         remoteDataSource.getAllMovies(object :RemoteDataSource.LoadAllMovieCallback{
             override fun onAllMoviesReceived(moviesResponses: List<ItemResponseEntity>) {
-                val movieList = ArrayList<ItemResponseEntity>()
+                val movieList = ArrayList<ItemEntity>()
                 for(response in moviesResponses){
                     movieList.add(
-                        ItemResponseEntity(
+                        ItemEntity(
                             response.itemId,
                             response.title,
                             response.dateItem,
                             response.description,
-                            response.imagePath,
+                            0,
                         )
                     )
                 }
@@ -50,19 +51,19 @@ class MyRepository private constructor(private val remoteDataSource: RemoteDataS
         return movieResult
     }
 
-    override fun getAllTv():LiveData<List<ItemResponseEntity>>{
-        val tvResult = MutableLiveData<List<ItemResponseEntity>>()
+    override fun getAllTv():LiveData<List<ItemEntity>>{
+        val tvResult = MutableLiveData<List<ItemEntity>>()
         remoteDataSource.getAllTv(object :RemoteDataSource.LoadAllTvCallback{
             override fun onAllTvsReceived(tvsResponses: List<ItemResponseEntity>) {
-                val tvlist = ArrayList<ItemResponseEntity>()
+                val tvlist = ArrayList<ItemEntity>()
                 for(response in tvsResponses){
                     tvlist.add(
-                        ItemResponseEntity(
+                        ItemEntity(
                             response.itemId,
                             response.title,
                             response.dateItem,
                             response.description,
-                            response.imagePath,
+                            0,
                         )
                     )
                 }

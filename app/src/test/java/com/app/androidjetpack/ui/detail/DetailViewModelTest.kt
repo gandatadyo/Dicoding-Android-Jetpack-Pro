@@ -6,20 +6,22 @@ import androidx.lifecycle.Observer
 import com.app.androidjetpack.data.MyRepository
 import com.app.androidjetpack.data.remote.response.ItemResponseEntity
 import com.app.androidjetpack.data.source.local.ItemEntity
+import com.app.androidjetpack.utils.DataDummy
 import org.junit.Test
 
 import org.junit.Before
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
 class DetailViewModelTest {
     private lateinit var viewModel: DetailViewModel
-    private var idmovie = "337404"
+    private val dummyCourse = DataDummy.generateDummyMovie()[0]
+    private val courseId = dummyCourse.itemId
+//    private val dummyModules = DataDummy.generateDummyModules(courseId)
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -28,23 +30,22 @@ class DetailViewModelTest {
     private lateinit var myRepository: MyRepository
 
     @Mock
-    private lateinit var observer: Observer<ItemResponseEntity>
+    private lateinit var courseObserver: Observer<ItemEntity>
+
+    @Mock
+    private lateinit var modulesObserver: Observer<List<ItemEntity>>
 
     @Before
     fun setUp(){
         viewModel = DetailViewModel(myRepository)
+//        viewModel.setSelectedCourse(courseId)
     }
 
     @Test
     fun getDetailMovies() {
-        val dummyMovie = viewModel.getDetailMovies(idmovie)
-        val course = MutableLiveData<ItemResponseEntity>()
-//        course.value = dummyMovie
-        val movie = MutableLiveData<List<ItemResponseEntity>>()
-        `when`(myRepository.getDetailTV(idmovie)).thenReturn(dummyMovie)
+        val course = MutableLiveData<ItemEntity>()
+        course.value = dummyCourse
 
-//        viewModel.getDetailMovies(idmovie).observeForever(observer)
-//        verify(observer).onChanged(dummyMovie)
     }
 
     @Test

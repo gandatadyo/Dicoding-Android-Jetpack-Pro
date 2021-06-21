@@ -5,16 +5,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.androidjetpack.R
-import com.app.androidjetpack.data.remote.response.ItemResponseEntity
+import com.app.androidjetpack.data.source.local.ItemEntity
 import com.app.androidjetpack.databinding.ItemMovieBinding
 import com.app.androidjetpack.ui.detail.DetailItemActivity
 import com.bumptech.glide.Glide
 import java.util.ArrayList
 
 class TvAdapter: RecyclerView.Adapter<TvAdapter.TvViewHolder>()  {
-    private var listMovies = ArrayList<ItemResponseEntity>()
+    private var listMovies = ArrayList<ItemEntity>()
 
-    fun setTvs(items: List<ItemResponseEntity>?) {
+    fun setTvs(items: List<ItemEntity>?) {
         if (items == null) return
         this.listMovies.clear()
         this.listMovies.addAll(items)
@@ -34,7 +34,7 @@ class TvAdapter: RecyclerView.Adapter<TvAdapter.TvViewHolder>()  {
 
     class TvViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
         private val urlimg = "https://image.tmdb.org/t/p/original"
-        fun bind(item: ItemResponseEntity) {
+        fun bind(item: ItemEntity) {
             with(binding) {
                 tvItemTitle.text = item.title
                 tvItemDate.text = itemView.resources.getString(R.string.info_date, item.dateItem)
