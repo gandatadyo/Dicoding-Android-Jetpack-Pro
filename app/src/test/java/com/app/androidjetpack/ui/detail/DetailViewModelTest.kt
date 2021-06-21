@@ -1,30 +1,54 @@
 package com.app.androidjetpack.ui.detail
 
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertNotNull
-import org.junit.Before
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import com.app.androidjetpack.data.MyRepository
+import com.app.androidjetpack.data.remote.response.ItemResponseEntity
+import com.app.androidjetpack.data.source.local.ItemEntity
 import org.junit.Test
 
+import org.junit.Before
+import org.junit.Rule
+import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.Mockito.*
+import org.mockito.junit.MockitoJUnitRunner
+
+@RunWith(MockitoJUnitRunner::class)
 class DetailViewModelTest {
-//    private lateinit var viewModel: DetailViewModel
-//    private val dummyItem = DataDummy.generateDummyMovie()[0]
-//    private val itemId = dummyItem.itemId
-//
-//    @Before
-//    fun setUp() {
-//        viewModel = DetailViewModel()
-//        viewModel.setSelectedData(itemId)
-//    }
+    private lateinit var viewModel: DetailViewModel
+    private var idmovie = "337404"
+
+    @get:Rule
+    var instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    @Mock
+    private lateinit var myRepository: MyRepository
+
+    @Mock
+    private lateinit var observer: Observer<ItemResponseEntity>
+
+    @Before
+    fun setUp(){
+        viewModel = DetailViewModel(myRepository)
+    }
 
     @Test
-    fun getDetail() {
-//        viewModel.setSelectedData(dummyItem.itemId)
-//        val dataEntity = viewModel.getData("movie")
-//        assertNotNull(dataEntity)
-//        assertEquals(dummyItem.itemId, dataEntity?.itemId)
-//        assertEquals(dummyItem.title, dataEntity?.title)
-//        assertEquals(dummyItem.dateItem, dataEntity?.dateItem)
-//        assertEquals(dummyItem.description, dataEntity?.description)
-//        assertEquals(dummyItem.imagePath, dataEntity?.imagePath)
+    fun getDetailMovies() {
+        val dummyMovie = viewModel.getDetailMovies(idmovie)
+        val course = MutableLiveData<ItemResponseEntity>()
+//        course.value = dummyMovie
+        val movie = MutableLiveData<List<ItemResponseEntity>>()
+        `when`(myRepository.getDetailTV(idmovie)).thenReturn(dummyMovie)
+
+//        viewModel.getDetailMovies(idmovie).observeForever(observer)
+//        verify(observer).onChanged(dummyMovie)
+    }
+
+    @Test
+    fun getDetailTvs() {
+
     }
 }

@@ -1,11 +1,12 @@
 package com.app.androidjetpack.ui.detail
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.app.androidjetpack.R
-import com.app.androidjetpack.data.entity.MovieEntity
-import com.app.androidjetpack.data.entity.TvEntity
+import com.app.androidjetpack.data.remote.response.ItemResponseEntity
+import com.app.androidjetpack.data.source.local.ItemEntity
 import com.app.androidjetpack.databinding.ActivityDetailItemBinding
 import com.app.androidjetpack.databinding.ContentDetailBinding
 import com.app.androidjetpack.utils.EspressoIdlingResource
@@ -25,13 +26,14 @@ class DetailItemActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val activityDetailBinding = ActivityDetailItemBinding.inflate(layoutInflater)
         detailContentBinding = activityDetailBinding.detailContent
+        detailContentBinding.loadingView.visibility = View.GONE
 
         setContentView(activityDetailBinding.root)
         setSupportActionBar(activityDetailBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val factory = ViewModelFactory.getInstance()
-        val viewModel = ViewModelProvider(this,factory)[DetailDataViewModel::class.java]
+        val viewModel = ViewModelProvider(this,factory)[DetailViewModel::class.java]
 
         val extras = intent.extras
         if (extras != null) {
@@ -42,22 +44,26 @@ class DetailItemActivity : AppCompatActivity() {
                 if(mode=="movie"){
                     supportActionBar?.title = "Detail Movie"
                     EspressoIdlingResource.increment()
+                    detailContentBinding.loadingView.visibility = View.VISIBLE
                     viewModel.getDetailMovies(itemId).observe(this, { movie ->
-                        populateItemMovie(movie)
+                        detailContentBinding.loadingView.visibility = View.GONE
                         if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
                             //Memberitahukan bahwa tugas sudah selesai dijalankan
                             EspressoIdlingResource.decrement()
                         }
+                        populateItemMovie(movie)
                     })
                 }else if(mode=="tv"){
                     supportActionBar?.title = "Detail TV"
                     EspressoIdlingResource.increment()
+                    detailContentBinding.loadingView.visibility = View.VISIBLE
                     viewModel.getDetailTvs(itemId).observe(this, { tv ->
-                        populateItemTv(tv)
+                        detailContentBinding.loadingView.visibility = View.GONE
                         if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
                             //Memberitahukan bahwa tugas sudah selesai dijalankan
                             EspressoIdlingResource.decrement()
                         }
+                        populateItemTv(tv)
                     })
                 }
 
@@ -65,17 +71,17 @@ class DetailItemActivity : AppCompatActivity() {
         }
     }
 
-    private fun populateItemMovie(item: MovieEntity) {
-        detailContentBinding.textTitle.text = item.titleMovie
-        detailContentBinding.textDescription.text = item.descMovie
-        detailContentBinding.textDate.text = resources.getString(R.string.info_date, item.dateMovie)
-        Glide.with(this).load(urlimg+item.imgMovie).into(detailContentBinding.imagePoster)
+    private fun populateItemMovie(item: ItemResponseEntity) {
+        detailContentBinding.textTitle.text = item.title
+        detailContentBinding.textDescription.text = item.description
+        detailContentBinding.textDate.text = resources.getString(R.string.info_date, item.dateItem)
+        Glide.with(this).load(urlimg+item.imagePath).into(detailContentBinding.imagePoster)
     }
 
-    private fun populateItemTv(item: TvEntity) {
-        detailContentBinding.textTitle.text = item.titleTv
-        detailContentBinding.textDescription.text = item.descTv
-        detailContentBinding.textDate.text = resources.getString(R.string.info_date, item.dateTv)
-        Glide.with(this).load(urlimg+item.imgTv).into(detailContentBinding.imagePoster)
+    private fun populateItemTv(item: ItemResponseEntity) {
+        detailContentBinding.textTitle.text = item.title
+        detailContentBinding.textDescription.text = item.description
+        detailContentBinding.textDate.text = resources.getString(R.string.info_date, item.dateItem)
+        Glide.with(this).load(urlimg+item.imagePath).into(detailContentBinding.imagePoster)
     }
 }

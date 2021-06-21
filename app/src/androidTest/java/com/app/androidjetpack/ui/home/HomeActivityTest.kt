@@ -1,25 +1,22 @@
 package com.app.androidjetpack.ui.home
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
 import com.app.androidjetpack.R
-import com.app.androidjetpack.data.entity.MovieEntity
-import com.app.androidjetpack.data.entity.TvEntity
+import com.app.androidjetpack.data.remote.response.ItemResponseEntity
 import com.app.androidjetpack.utils.EspressoIdlingResource
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
 class HomeActivityTest {
-    private var dummyMovies = ArrayList<MovieEntity>()
-    private var dummyTvs = ArrayList<TvEntity>()
+    private var dummyMovies = ArrayList<ItemResponseEntity>()
+    private var dummyTvs = ArrayList<ItemResponseEntity>()
 
     private lateinit var instrumentalContext: Context
 
@@ -35,10 +32,6 @@ class HomeActivityTest {
         IdlingRegistry.getInstance().unregister(EspressoIdlingResource.getEspressoIdlingResource())
     }
 
-
-//    @get:Rule
-//    var activityRule = ActivityScenarioRule(HomeActivity::class.java)
-
     @Test
     fun loadMovies() {
 //        onView(withId(R.id.lblDataIdlingResource)).check(matches(withText(instrumentalContext.getString(R.string.prepare))))
@@ -46,7 +39,7 @@ class HomeActivityTest {
 //        onView(withId(R.id.lblDataIdlingResource)).check(matches(withText(instrumentalContext.getString(R.string.delay1))))
 
         onView(withId(R.id.rvMovie)).check(matches(isDisplayed()))
-        onView(withId(R.id.rvMovie)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyMovies.size))
+//        onView(withId(R.id.rvMovie)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyMovies.size))
     }
 
 //    @Test

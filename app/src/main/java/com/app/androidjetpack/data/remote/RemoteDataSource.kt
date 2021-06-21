@@ -1,8 +1,8 @@
 package com.app.androidjetpack.data.remote
 
 import android.util.Log
-import com.app.androidjetpack.data.entity.MovieEntity
-import com.app.androidjetpack.data.entity.TvEntity
+import com.app.androidjetpack.data.remote.response.ItemResponseEntity
+import com.app.androidjetpack.data.source.local.ItemEntity
 import com.app.androidjetpack.utils.ModulRestapi
 import org.json.JSONObject
 
@@ -21,11 +21,11 @@ class RemoteDataSource private constructor(private val modulRestapi: ModulRestap
 
     fun getAllMovies(callback: LoadAllMovieCallback){
         modulRestapi.requestHttp("/3/discover/movie",{
-            val movie = ArrayList<MovieEntity>()
+            val movie = ArrayList<ItemResponseEntity>()
             val list = JSONObject(it).getJSONArray("results")
             for(i in 0 until list.length()){
                 movie.add(
-                    MovieEntity(
+                    ItemResponseEntity(
                         list.getJSONObject(i).getString("id"),
                         list.getJSONObject(i).getString("original_title"),
                         list.getJSONObject(i).getString("release_date"),
@@ -43,11 +43,11 @@ class RemoteDataSource private constructor(private val modulRestapi: ModulRestap
 
     fun getAllTv(callback: LoadAllTvCallback){
         modulRestapi.requestHttp("/3/discover/tv",{
-            val tv = ArrayList<TvEntity>()
+            val tv = ArrayList<ItemResponseEntity>()
             val list = JSONObject(it).getJSONArray("results")
             for(i in 0 until list.length()){
                 tv.add(
-                    TvEntity(
+                    ItemResponseEntity(
                         list.getJSONObject(i).getString("id"),
                         list.getJSONObject(i).getString("original_name"),
                         list.getJSONObject(i).getString("first_air_date"),
@@ -64,7 +64,7 @@ class RemoteDataSource private constructor(private val modulRestapi: ModulRestap
 
     fun getDetailMovie(idtv:String,callback: LoadDetailMovieCallback){
         modulRestapi.requestHttp("/3/movie/${idtv}",{
-            val item = MovieEntity(
+            val item = ItemResponseEntity(
                 idtv,
                 JSONObject(it).getString("original_title"),
                 JSONObject(it).getString("release_date"),
@@ -79,7 +79,7 @@ class RemoteDataSource private constructor(private val modulRestapi: ModulRestap
 
     fun getDetailTv(idtv:String,callback: LoadDetailTvCallback){
         modulRestapi.requestHttp("/3/tv/${idtv}",{
-            callback.onDetailTvReceived(TvEntity(
+            callback.onDetailTvReceived(ItemResponseEntity(
                 idtv,
                 JSONObject(it).getString("original_name"),
                 JSONObject(it).getString("first_air_date"),
@@ -92,19 +92,19 @@ class RemoteDataSource private constructor(private val modulRestapi: ModulRestap
     }
 
     interface LoadAllMovieCallback {
-        fun onAllMoviesReceived(moviesResponses: List<MovieEntity>)
+        fun onAllMoviesReceived(moviesResponses: List<ItemResponseEntity>)
     }
 
     interface LoadAllTvCallback {
-        fun onAllTvsReceived(tvsResponses: List<TvEntity>)
+        fun onAllTvsReceived(tvsResponses: List<ItemResponseEntity>)
     }
 
     interface LoadDetailMovieCallback {
-        fun onDetailMovieReceived(tvsResponses: MovieEntity)
+        fun onDetailMovieReceived(tvsResponses: ItemResponseEntity)
     }
 
     interface LoadDetailTvCallback {
-        fun onDetailTvReceived(tvsResponses: TvEntity)
+        fun onDetailTvReceived(tvsResponses: ItemResponseEntity)
     }
 
 }

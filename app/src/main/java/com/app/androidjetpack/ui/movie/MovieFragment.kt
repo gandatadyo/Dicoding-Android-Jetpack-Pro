@@ -19,6 +19,7 @@ class MovieFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         fragmentMovieBinding = FragmentMovieBinding.inflate(layoutInflater, container, false)
+        fragmentMovieBinding.loadingView.visibility = View.GONE
         return fragmentMovieBinding.root
     }
 
@@ -28,17 +29,19 @@ class MovieFragment : Fragment() {
 
         if (activity != null) {
             val factory = ViewModelFactory.getInstance()
-            val viewModel = ViewModelProvider(this,factory)[MovieDataViewModel::class.java]
+            val viewModel = ViewModelProvider(this,factory)[MovieViewModel::class.java]
 
             val academyAdapter = MovieAdapter()
             EspressoIdlingResource.increment()
+            fragmentMovieBinding.loadingView.visibility = View.VISIBLE
             viewModel.getMovies().observe(requireActivity(), { movies ->
-                academyAdapter.setMovies(movies)
-                academyAdapter.notifyDataSetChanged()
                 if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
                     //Memberitahukan bahwa tugas sudah selesai dijalankan
                     EspressoIdlingResource.decrement()
                 }
+                academyAdapter.setMovies(movies)
+                academyAdapter.notifyDataSetChanged()
+                fragmentMovieBinding.loadingView.visibility = View.GONE
             })
 
             with(fragmentMovieBinding.rvMovie) {

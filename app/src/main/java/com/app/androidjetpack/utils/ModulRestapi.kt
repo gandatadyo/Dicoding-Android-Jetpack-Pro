@@ -4,9 +4,6 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.StringRequestListener
-import com.app.androidjetpack.data.entity.MovieEntity
-import org.json.JSONObject
-
 
 class ModulRestapi {
     private val mainUrl = "https://api.themoviedb.org"

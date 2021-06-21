@@ -19,6 +19,7 @@ class TvFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         fragmentTvBinding = FragmentTvBinding.inflate(layoutInflater, container, false)
+        fragmentTvBinding.loadingView.visibility = View.GONE
         return fragmentTvBinding.root
     }
 
@@ -27,17 +28,19 @@ class TvFragment : Fragment() {
 
         if (activity != null) {
             val factory = ViewModelFactory.getInstance()
-            val viewModel = ViewModelProvider(this,factory)[TvDataViewModel::class.java]
+            val viewModel = ViewModelProvider(this,factory)[TvViewModel::class.java]
 
             val academyAdapter = TvAdapter()
             EspressoIdlingResource.increment()
+            fragmentTvBinding.loadingView.visibility = View.VISIBLE
             viewModel.getTV().observe(requireActivity(), { movies ->
-                academyAdapter.setTvs(movies)
-                academyAdapter.notifyDataSetChanged()
                 if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
                     //Memberitahukan bahwa tugas sudah selesai dijalankan
                     EspressoIdlingResource.decrement()
                 }
+                academyAdapter.setTvs(movies)
+                academyAdapter.notifyDataSetChanged()
+                fragmentTvBinding.loadingView.visibility = View.GONE
             })
 
             with(fragmentTvBinding.rvTv) {

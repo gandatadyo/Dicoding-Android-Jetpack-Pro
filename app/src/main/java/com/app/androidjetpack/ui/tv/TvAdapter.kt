@@ -5,16 +5,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.androidjetpack.R
-import com.app.androidjetpack.data.entity.TvEntity
+import com.app.androidjetpack.data.remote.response.ItemResponseEntity
 import com.app.androidjetpack.databinding.ItemMovieBinding
 import com.app.androidjetpack.ui.detail.DetailItemActivity
 import com.bumptech.glide.Glide
 import java.util.ArrayList
 
 class TvAdapter: RecyclerView.Adapter<TvAdapter.TvViewHolder>()  {
-    private var listMovies = ArrayList<TvEntity>()
+    private var listMovies = ArrayList<ItemResponseEntity>()
 
-    fun setTvs(items: List<TvEntity>?) {
+    fun setTvs(items: List<ItemResponseEntity>?) {
         if (items == null) return
         this.listMovies.clear()
         this.listMovies.addAll(items)
@@ -34,14 +34,14 @@ class TvAdapter: RecyclerView.Adapter<TvAdapter.TvViewHolder>()  {
 
     class TvViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
         private val urlimg = "https://image.tmdb.org/t/p/original"
-        fun bind(item: TvEntity) {
+        fun bind(item: ItemResponseEntity) {
             with(binding) {
-                tvItemTitle.text = item.titleTv
-                tvItemDate.text = itemView.resources.getString(R.string.info_date, item.dateTv)
-                Glide.with(itemView.context).load(urlimg+item.imgTv).into(imgPoster)
+                tvItemTitle.text = item.title
+                tvItemDate.text = itemView.resources.getString(R.string.info_date, item.dateItem)
+                Glide.with(itemView.context).load(urlimg+item.imagePath).into(imgPoster)
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailItemActivity::class.java)
-                    intent.putExtra(DetailItemActivity.EXTRA_ITEM, item.id)
+                    intent.putExtra(DetailItemActivity.EXTRA_ITEM, item.itemId)
                     intent.putExtra(DetailItemActivity.EXTRA_MODE, "tv")
                     itemView.context.startActivity(intent)
                 }

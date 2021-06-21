@@ -2,9 +2,8 @@ package com.app.androidjetpack.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.app.androidjetpack.data.entity.MovieEntity
-import com.app.androidjetpack.data.entity.TvEntity
 import com.app.androidjetpack.data.remote.RemoteDataSource
+import com.app.androidjetpack.data.remote.response.ItemResponseEntity
 
 class MyRepository private constructor(private val remoteDataSource: RemoteDataSource):MyDataSource {
 
@@ -18,19 +17,19 @@ class MyRepository private constructor(private val remoteDataSource: RemoteDataS
             }
     }
 
-    override fun getAllMovie():LiveData<List<MovieEntity>> {
-        val movieResult = MutableLiveData<List<MovieEntity>>()
+    override fun getAllMovie():LiveData<List<ItemResponseEntity>> {
+        val movieResult = MutableLiveData<List<ItemResponseEntity>>()
         remoteDataSource.getAllMovies(object :RemoteDataSource.LoadAllMovieCallback{
-            override fun onAllMoviesReceived(moviesResponses: List<MovieEntity>) {
-                val movieList = ArrayList<MovieEntity>()
+            override fun onAllMoviesReceived(moviesResponses: List<ItemResponseEntity>) {
+                val movieList = ArrayList<ItemResponseEntity>()
                 for(response in moviesResponses){
                     movieList.add(
-                        MovieEntity(
-                            response.id,
-                            response.titleMovie,
-                            response.dateMovie,
-                            response.descMovie,
-                            response.imgMovie,
+                        ItemResponseEntity(
+                            response.itemId,
+                            response.title,
+                            response.dateItem,
+                            response.description,
+                            response.imagePath,
                         )
                     )
                 }
@@ -41,29 +40,29 @@ class MyRepository private constructor(private val remoteDataSource: RemoteDataS
         return movieResult
     }
 
-    override fun getDetailMovie(idmovie:String):LiveData<MovieEntity>{
-        val movieResult = MutableLiveData<MovieEntity>()
+    override fun getDetailMovie(idmovie:String):LiveData<ItemResponseEntity>{
+        val movieResult = MutableLiveData<ItemResponseEntity>()
         remoteDataSource.getDetailMovie(idmovie,object :RemoteDataSource.LoadDetailMovieCallback{
-            override fun onDetailMovieReceived(tvsResponses: MovieEntity) {
+            override fun onDetailMovieReceived(tvsResponses: ItemResponseEntity) {
                 movieResult.postValue(tvsResponses)
             }
         })
         return movieResult
     }
 
-    override fun getAllTv():LiveData<List<TvEntity>>{
-        val tvResult = MutableLiveData<List<TvEntity>>()
+    override fun getAllTv():LiveData<List<ItemResponseEntity>>{
+        val tvResult = MutableLiveData<List<ItemResponseEntity>>()
         remoteDataSource.getAllTv(object :RemoteDataSource.LoadAllTvCallback{
-            override fun onAllTvsReceived(tvsResponses: List<TvEntity>) {
-                val tvlist = ArrayList<TvEntity>()
+            override fun onAllTvsReceived(tvsResponses: List<ItemResponseEntity>) {
+                val tvlist = ArrayList<ItemResponseEntity>()
                 for(response in tvsResponses){
                     tvlist.add(
-                        TvEntity(
-                            response.id,
-                            response.titleTv,
-                            response.dateTv,
-                            response.descTv,
-                            response.imgTv,
+                        ItemResponseEntity(
+                            response.itemId,
+                            response.title,
+                            response.dateItem,
+                            response.description,
+                            response.imagePath,
                         )
                     )
                 }
@@ -73,10 +72,10 @@ class MyRepository private constructor(private val remoteDataSource: RemoteDataS
         return tvResult
     }
 
-    override fun getDetailTV(idtv:String):LiveData<TvEntity>{
-        val tvResult = MutableLiveData<TvEntity>()
+    override fun getDetailTV(idtv:String):LiveData<ItemResponseEntity>{
+        val tvResult = MutableLiveData<ItemResponseEntity>()
         remoteDataSource.getDetailTv(idtv,object :RemoteDataSource.LoadDetailTvCallback{
-            override fun onDetailTvReceived(tvsResponses: TvEntity) {
+            override fun onDetailTvReceived(tvsResponses: ItemResponseEntity) {
                 tvResult.postValue(tvsResponses)
             }
         })
