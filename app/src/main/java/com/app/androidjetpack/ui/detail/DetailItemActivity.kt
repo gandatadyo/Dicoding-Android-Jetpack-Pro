@@ -5,7 +5,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.app.androidjetpack.R
-import com.app.androidjetpack.data.remote.response.ItemResponseEntity
 import com.app.androidjetpack.data.source.local.ItemEntity
 import com.app.androidjetpack.databinding.ActivityDetailItemBinding
 import com.app.androidjetpack.databinding.ContentDetailBinding
@@ -71,14 +70,14 @@ class DetailItemActivity : AppCompatActivity() {
         }
     }
 
-    private fun populateItemMovie(item: ItemResponseEntity) {
+    private fun populateItemMovie(item: ItemEntity) {
         detailContentBinding.textTitle.text = item.title
         detailContentBinding.textDescription.text = item.description
         detailContentBinding.textDate.text = resources.getString(R.string.info_date, item.dateItem)
         Glide.with(this).load(urlimg+item.imagePath).into(detailContentBinding.imagePoster)
     }
 
-    private fun populateItemTv(item: ItemResponseEntity) {
+    private fun populateItemTv(item: ItemEntity) {
         detailContentBinding.textTitle.text = item.title
         detailContentBinding.textDescription.text = item.description
         detailContentBinding.textDate.text = resources.getString(R.string.info_date, item.dateItem)

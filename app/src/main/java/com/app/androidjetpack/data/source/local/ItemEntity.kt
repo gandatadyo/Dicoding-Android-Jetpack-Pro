@@ -5,5 +5,5 @@ data class ItemEntity(
     var title: String,
     var dateItem: String,
     var description: String,
-    var imagePath: Int
+    var imagePath: String
 )

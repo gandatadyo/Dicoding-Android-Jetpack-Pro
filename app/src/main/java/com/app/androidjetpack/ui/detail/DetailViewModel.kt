@@ -8,8 +8,8 @@ import com.app.androidjetpack.data.source.local.ItemEntity
 
 class DetailViewModel(private val myRepository: MyRepository):ViewModel() {
 
-    fun getDetailMovies(idmovie:String): LiveData<ItemResponseEntity> = myRepository.getDetailMovie(idmovie)
+    fun getDetailMovies(idmovie:String): LiveData<ItemEntity> = myRepository.getDetailMovie(idmovie)
 
-    fun getDetailTvs(idtv:String): LiveData<ItemResponseEntity> = myRepository.getDetailTV(idtv)
+    fun getDetailTvs(idtv:String): LiveData<ItemEntity> = myRepository.getDetailTV(idtv)
 
 }
