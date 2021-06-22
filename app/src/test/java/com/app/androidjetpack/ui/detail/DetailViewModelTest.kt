@@ -21,8 +21,8 @@ import org.mockito.junit.MockitoJUnitRunner
 class DetailViewModelTest {
     private lateinit var viewModel: DetailViewModel
     private val dummyMovie = DataDummy.generateDummyMovie()[0]
-    private val dummyTv = DataDummy.generateDummyMovie()[0]
     private val idmovie = dummyMovie.itemId
+    private val dummyTv = DataDummy.generateDummyTvs()[0]
     private val idtv = dummyTv.itemId
 
     @get:Rule
@@ -33,13 +33,13 @@ class DetailViewModelTest {
 
     @Mock
     private lateinit var movieObserver: Observer<ItemEntity>
+
     @Mock
     private lateinit var tvObserver: Observer<ItemEntity>
 
     @Before
     fun setUp(){
         viewModel = DetailViewModel(myRepository)
-        viewModel.getDetailTvs(idtv)
     }
 
     @Test
@@ -49,7 +49,7 @@ class DetailViewModelTest {
 
         `when`(myRepository.getDetailMovie(idmovie)).thenReturn(movie)
         val movieEntity = viewModel.getDetailMovies(idmovie).value as ItemEntity
-        verify(myRepository).getDetailTV(idmovie)
+        verify(myRepository).getDetailMovie(idmovie)
         assertNotNull(movieEntity)
         assertEquals(dummyMovie.itemId, movieEntity.itemId)
         assertEquals(dummyMovie.dateItem, movieEntity.dateItem)

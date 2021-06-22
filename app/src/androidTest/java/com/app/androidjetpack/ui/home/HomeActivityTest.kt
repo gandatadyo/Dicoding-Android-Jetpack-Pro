@@ -9,14 +9,15 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
 import com.app.androidjetpack.R
 import com.app.androidjetpack.data.remote.response.ItemResponseEntity
+import com.app.androidjetpack.data.source.local.ItemEntity
 import com.app.androidjetpack.utils.EspressoIdlingResource
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
 class HomeActivityTest {
-    private var dummyMovies = ArrayList<ItemResponseEntity>()
-    private var dummyTvs = ArrayList<ItemResponseEntity>()
+    private var dummyMovies = ArrayList<ItemEntity>()
+    private var dummyTvs = ArrayList<ItemEntity>()
 
     private lateinit var instrumentalContext: Context
 
