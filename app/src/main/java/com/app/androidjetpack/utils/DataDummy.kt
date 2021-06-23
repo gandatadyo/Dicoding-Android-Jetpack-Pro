@@ -1,5 +1,6 @@
 package com.app.androidjetpack.utils
 
+import com.app.androidjetpack.data.remote.response.ItemResponseEntity
 import com.app.androidjetpack.data.source.local.ItemEntity
 import java.util.ArrayList
 
@@ -31,6 +32,21 @@ object DataDummy {
         movies.add(ItemEntity("126525","Elite Histórias Breves: Carla Samuel","2021-06-17","Samuel attempts a big, romantic gesture at the airport in order to persuade Carla not to board her flight to London.", "/onPkMMtzcJs9A6vKljNBa3ujI8g.jpg"))
         movies.add(ItemEntity("91557","Ragnarok","2020-01-31","A small Norwegian town experiencing warm winters and violent downpours seems to be headed for another Ragnarök -- unless someone intervenes in time.", "/xUtOM1QO4r8w8yeE00QvBdq58N5.jpg"))
         movies.add(ItemEntity("1416","Grey's Anatomy","2005-03-27","Follows the personal and professional lives of a group of doctors at Seattle’s Grey Sloan Memorial Hospital.", "/clnyhPqj1SNgpAdeSS6a6fwE6Bo.jpg"))
+        return movies
+    }
+
+    fun generateRemoteDummyMovie(): ArrayList<ItemResponseEntity> {
+        val movies = ArrayList<ItemResponseEntity>()
+        movies.add(ItemResponseEntity("337404","Cruella","2021-05-26","In 1970s London amidst the punk rock revolution, a young grifter named Estella is determined to make a name for herself with her designs. She befriends a pair of young thieves who appreciate her appetite for mischief, and together they are able to build a life for themselves on the London streets. One day, Estella’s flair for fashion catches the eye of the Baroness von Hellman, a fashion legend who is devastatingly chic and terrifyingly haute. But their relationship sets in motion a course of events and revelations that will cause Estella to embrace her wicked side and become the raucous, fashionable and revenge-bent Cruella.", "/rTh4K5uw9HypmpGslcKd4QfHl93.jpg"))
+        movies.add(ItemResponseEntity("423108","The Conjuring: The Devil Made Me Do It","2021-05-25","Paranormal investigators Ed and Lorraine Warren encounter what would become one of the most sensational cases from their files. The fight for the soul of a young boy takes them beyond anything they'd ever seen before, to mark the first time in U.S. history that a murder suspect would claim demonic possession as a defense.", "/xbSuFiJbbBWCkyCCKIMfuDCA4yV.jpg"))
+        movies.add(ItemResponseEntity("637649","Wrath of Man","2021-04-22","A cold and mysterious new security guard for a Los Angeles cash truck company surprises his co-workers when he unleashes precision skills during a heist. The crew is left wondering who he is and where he came from. Soon, the marksman's ultimate motive becomes clear as he takes dramatic and irrevocable steps to settle a score.", "/M7SUK85sKjaStg4TKhlAVyGlz3.jpg"))
+        movies.add(ItemResponseEntity("581726","Infinite","2021-09-08","Evan McCauley has skills he never learned and memories of places he has never visited. Self-medicated and on the brink of a mental breakdown, a secret group that call themselves “Infinites” come to his rescue, revealing that his memories are real.", "/niw2AKHz6XmwiRMLWaoyAOAti0G.jpg"))
+        movies.add(ItemResponseEntity("520763","A Quiet Place Part II","2021-05-21","Following the events at home, the Abbott family now face the terrors of the outside world. Forced to venture into the unknown, they realize that the creatures that hunt by sound are not the only threats that lurk beyond the sand path.","/4q2hz2m8hubgvijz8Ez0T2Os2Yv.jpg"))
+        movies.add(ItemResponseEntity("503736","Army of the Dead","2021-05-14","Following a zombie outbreak in Las Vegas, a group of mercenaries take the ultimate gamble: venturing into the quarantine zone to pull off the greatest heist ever attempted.", "/z8CExJekGrEThbpMXAmCFvvgoJR.jpg"))
+        movies.add(ItemResponseEntity("460465","Mortal Kombat","2021-04-07","Washed-up MMA fighter Cole Young, unaware of his heritage, and hunted by Emperor Shang Tsung's best warrior, Sub-Zero, seeks out and trains with Earth's greatest champions as he prepares to stand against the enemies of Outworld in a high stakes battle for the universe.", "/nkayOAUBUu4mMvyNf9iHSUiPjF1.jpg"))
+        movies.add(ItemResponseEntity("632357","The Unholy","2021-03-31","Alice, a young hearing-impaired girl who, after a supposed visitation from the Virgin Mary, is inexplicably able to hear, speak and heal the sick. As word spreads and people from near and far flock to witness her miracles, a disgraced journalist hoping to revive his career visits the small New England town to investigate. When terrifying events begin to happen all around, he starts to question if these phenomena are the works of the Virgin Mary or something much more sinister.", "/bShgiEQoPnWdw4LBrYT5u18JF34.jpg"))
+        movies.add(ItemResponseEntity("615658","Awake","2021-06-09","After a sudden global event wipes out all electronics and takes away humankind’s ability to sleep, chaos quickly begins to consume the world. Only Jill, an ex-soldier with a troubled past, may hold the key to a cure in the form of her own daughter. The question is, can Jill safely deliver her daughter and save the world before she herself loses her mind.", "/uZkNbB8isWXHMDNoIbqXvmslBMC.jpg"))
+        movies.add(ItemResponseEntity("508943","Luca","2021-06-17","Luca and his best friend Alberto experience an unforgettable summer on the Italian Riviera. But all the fun is threatened by a deeply-held secret: they are sea monsters from another world just below the water’s surface.", "/jTswp6KyDYKtvC52GbHagrZbGvD.jpg"))
         return movies
     }
 }

@@ -6,17 +6,7 @@ import com.app.androidjetpack.data.remote.RemoteDataSource
 import com.app.androidjetpack.data.remote.response.ItemResponseEntity
 import com.app.androidjetpack.data.source.local.ItemEntity
 
-class FakeMyRepository private constructor(private val remoteDataSource: RemoteDataSource):MyDataSource {
-
-    companion object {
-        @Volatile
-        private var instance: FakeMyRepository? = null
-
-        fun getInstance(remoteData: RemoteDataSource): FakeMyRepository =
-            instance ?: synchronized(this) {
-                FakeMyRepository(remoteData).apply { instance = this }
-            }
-    }
+class FakeMyRepository (private val remoteDataSource: RemoteDataSource):MyDataSource {
 
     override fun getAllMovie():LiveData<List<ItemEntity>> {
         val movieResult = MutableLiveData<List<ItemEntity>>()
