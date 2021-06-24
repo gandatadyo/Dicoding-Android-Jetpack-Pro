@@ -1,9 +1,11 @@
 package com.app.androidjetpack.data.remote
 
 import android.util.Log
+import android.widget.Toast
 import com.app.androidjetpack.data.remote.response.ItemResponseEntity
 import com.app.androidjetpack.data.source.local.ItemEntity
 import com.app.androidjetpack.utils.ModulRestapi
+import org.json.JSONException
 import org.json.JSONObject
 
 class RemoteDataSource private constructor(private val modulRestapi: ModulRestapi){
@@ -24,16 +26,20 @@ class RemoteDataSource private constructor(private val modulRestapi: ModulRestap
             val movie = ArrayList<ItemResponseEntity>()
             val list = JSONObject(it).getJSONArray("results")
             for(i in 0 until list.length()){
-                movie.add(
-                    ItemResponseEntity(
-                        list.getJSONObject(i).getString("id"),
-                        list.getJSONObject(i).getString("original_title"),
-                        list.getJSONObject(i).getString("release_date"),
-                        list.getJSONObject(i).getString("overview"),
-                        list.getJSONObject(i).getString("backdrop_path"),
-                    )
+                try {
+                    movie.add(
+                        ItemResponseEntity(
+                            list.getJSONObject(i).getString("id"),
+                            list.getJSONObject(i).getString("original_title"),
+                            list.getJSONObject(i).getString("release_date"),
+                            list.getJSONObject(i).getString("overview"),
+                            list.getJSONObject(i).getString("backdrop_path"),
+                        )
 
-                )
+                    )
+                }catch(e:JSONException){
+                    Log.d("error",e.toString())
+                }
             }
             callback.onAllMoviesReceived(movie)
         },{
@@ -46,15 +52,19 @@ class RemoteDataSource private constructor(private val modulRestapi: ModulRestap
             val tv = ArrayList<ItemResponseEntity>()
             val list = JSONObject(it).getJSONArray("results")
             for(i in 0 until list.length()){
-                tv.add(
-                    ItemResponseEntity(
-                        list.getJSONObject(i).getString("id"),
-                        list.getJSONObject(i).getString("original_name"),
-                        list.getJSONObject(i).getString("first_air_date"),
-                        list.getJSONObject(i).getString("overview"),
-                        list.getJSONObject(i).getString("backdrop_path"),
+                try {
+                    tv.add(
+                        ItemResponseEntity(
+                            list.getJSONObject(i).getString("id"),
+                            list.getJSONObject(i).getString("original_name"),
+                            list.getJSONObject(i).getString("first_air_date"),
+                            list.getJSONObject(i).getString("overview"),
+                            list.getJSONObject(i).getString("backdrop_path"),
+                        )
                     )
-                )
+                }catch(e:JSONException){
+                    Log.d("error",e.toString())
+                }
             }
             callback.onAllTvsReceived(tv)
         },{
