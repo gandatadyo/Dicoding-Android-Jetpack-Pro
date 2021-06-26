@@ -1,7 +1,7 @@
-package com.app.androidjetpack.data.source.local.room
+package com.app.androidjetpack.data.source.local
 
 import androidx.lifecycle.LiveData
-import com.app.androidjetpack.data.source.local.ItemEntity
+import com.app.androidjetpack.data.source.local.room.AcademyDao
 
 class LocalDataSource private constructor(private val mAcademyDao: AcademyDao) {
 
