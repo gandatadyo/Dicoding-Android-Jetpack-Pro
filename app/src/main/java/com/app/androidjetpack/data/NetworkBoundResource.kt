@@ -1,13 +1,11 @@
 package com.app.androidjetpack.data
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.app.androidjetpack.data.remote.ApiResponse
-import com.app.androidjetpack.data.remote.ApiResponse.Companion.success
 import com.app.androidjetpack.data.remote.StatusResponse
 import com.app.androidjetpack.utils.AppExecutors
+import com.app.androidjetpack.vo.Resource
 
 abstract class NetworkBoundResource<ResultType, RequestType>(private val mExecutors: AppExecutors) {
 
