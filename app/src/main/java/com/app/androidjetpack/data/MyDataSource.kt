@@ -10,8 +10,8 @@ interface MyDataSource {
 
     fun getAllTv(): LiveData<Resource<List<ItemEntity>>>
 
-    fun getDetailMovie(idmovie:String): LiveData<ItemEntity>
+    fun getDetailMovie(idmovie:String): LiveData<Resource<ItemEntity>>
 
-    fun getDetailTV(idtv:String): LiveData<ItemEntity>
+    fun getDetailTV(idtv:String): LiveData<Resource<ItemEntity>>
 
 }

@@ -74,40 +74,63 @@ class MyRepository private constructor(
         }.asLiveData()
     }
 
-    override fun getDetailMovie(idmovie:String):LiveData<ItemEntity>{
-        val movieResult = MutableLiveData<ItemEntity>()
-        remoteDataSource.getDetailMovie(idmovie,object :RemoteDataSource.LoadDetailMovieCallback{
-            override fun onDetailMovieReceived(tvsResponses: ItemResponseEntity) {
-                movieResult.postValue(
-                    ItemEntity(
-                        tvsResponses.itemId,
-                        tvsResponses.title,
-                        tvsResponses.dateItem,
-                        tvsResponses.description,
-                        tvsResponses.imagePath,
-                    )
-                )
-            }
-        })
-        return movieResult
+    override fun getDetailMovie(idmovie:String):LiveData<Resource<ItemEntity>>{
+//        val movieResult = MutableLiveData<ItemEntity>()
+//        remoteDataSource.getDetailMovie(idmovie,object :RemoteDataSource.LoadDetailMovieCallback{
+//            override fun onDetailMovieReceived(tvsResponses: ItemResponseEntity) {
+//                movieResult.postValue(
+//                    ItemEntity(
+//                        tvsResponses.itemId,
+//                        tvsResponses.title,
+//                        tvsResponses.dateItem,
+//                        tvsResponses.description,
+//                        tvsResponses.imagePath,
+//                    )
+//                )
+//            }
+//        })
+//        return movieResult
+        return object : NetworkBoundResource<ItemEntity,ItemResponseEntity>(appExecutors) {
+            override fun loadFromDB(): LiveData<ItemEntity> =
+                localDataSource.getModuleWithContent(idmovie)
+
+            override fun shouldFetch(moduleEntity: ModuleEntity?): Boolean =
+                moduleEntity?.contentEntity == null
+
+            override fun createCall(): LiveData<ApiResponse<ContentResponse>> =
+                remoteDataSource.getContent(moduleId)
+
+            override fun saveCallResult(contentResponse: ContentResponse) =
+                localDataSource.updateContent(contentResponse.content.toString(), moduleId)
+        }.asLiveData()
     }
 
-    override fun getDetailTV(idtv:String):LiveData<ItemEntity>{
-        val tvResult = MutableLiveData<ItemEntity>()
-        remoteDataSource.getDetailTv(idtv,object :RemoteDataSource.LoadDetailTvCallback{
-            override fun onDetailTvReceived(tvsResponses: ItemResponseEntity) {
-                tvResult.postValue(
-                    ItemEntity(
-                        tvsResponses.itemId,
-                        tvsResponses.title,
-                        tvsResponses.dateItem,
-                        tvsResponses.description,
-                        tvsResponses.imagePath,
-                    )
-                )
+    override fun getDetailTV(idtv:String):LiveData<Resource<ItemEntity>>{
+        return object : NetworkBoundResource<ItemEntity, ItemResponseEntity>(appExecutors) {
+            override fun loadFromDB(): LiveData<ItemEntity> =
+                localDataSource.getCourseWithModules(idtv)
+
+            override fun shouldFetch(courseWithModule: ItemEntity?): Boolean =
+                courseWithModule?.itemId == null || courseWithModule.itemId.isEmpty()
+
+            override fun createCall(): LiveData<ApiResponse<ItemResponseEntity>> =
+                remoteDataSource.getDetailTv(idtv)
+
+            override fun saveCallResult(moduleResponses: ItemResponseEntity) {
+                val moduleList = ArrayList<ItemEntity>()
+                for (response in moduleResponses) {
+                    val course = ItemEntity(response.itemId,
+                        response.title,
+                        response.dateItem,
+                        response.description,
+                        response.imagePath)
+
+                    moduleList.add(course)
+                }
+
+                localDataSource.insertModules(moduleList)
             }
-        })
-        return tvResult
+        }.asLiveData()
     }
 
 }

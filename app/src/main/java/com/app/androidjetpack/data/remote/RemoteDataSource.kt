@@ -94,49 +94,45 @@ class RemoteDataSource private constructor(private val modulRestapi: ModulRestap
         return resultItems
     }
 
-    fun getDetailMovie(idtv:String,callback: LoadDetailMovieCallback){
-        modulRestapi.requestHttp("/3/movie/${idtv}",{
-            val item = ItemResponseEntity(
-                idtv,
-                JSONObject(it).getString("original_title"),
-                JSONObject(it).getString("release_date"),
-                JSONObject(it).getString("overview"),
-                JSONObject(it).getString("poster_path")
-            )
-            callback.onDetailMovieReceived(item)
-        },{
-            Log.d("test","error") // nothing
-        })
+    fun getDetailMovie(idmovie:String):LiveData<ApiResponse<ItemResponseEntity>> {
+        EspressoIdlingResource.increment()
+        val resultModules = MutableLiveData<ApiResponse<ItemResponseEntity>>()
+        handler.postDelayed({
+            modulRestapi.requestHttp("/3/movie/${idmovie}",{
+                val item = ItemResponseEntity(
+                    idmovie,
+                    JSONObject(it).getString("original_title"),
+                    JSONObject(it).getString("release_date"),
+                    JSONObject(it).getString("overview"),
+                    JSONObject(it).getString("poster_path")
+                )
+                resultModules.value = ApiResponse.success(item)
+            },{
+                Log.d("test","error") // nothing
+            })
+            EspressoIdlingResource.decrement()
+        }, SERVICE_LATENCY_IN_MILLIS)
+        return resultModules
     }
 
-    fun getDetailTv(idtv:String,callback: LoadDetailTvCallback){
-        modulRestapi.requestHttp("/3/tv/${idtv}",{
-            callback.onDetailTvReceived(ItemResponseEntity(
-                idtv,
-                JSONObject(it).getString("original_name"),
-                JSONObject(it).getString("first_air_date"),
-                JSONObject(it).getString("overview"),
-                JSONObject(it).getString("poster_path")
-            ))
-        },{
-            Log.d("test","error") // nothing
-        })
+    fun getDetailTv(idtv:String):LiveData<ApiResponse<ItemResponseEntity>> {
+        EspressoIdlingResource.increment()
+        val resultModules = MutableLiveData<ApiResponse<ItemResponseEntity>>()
+        handler.postDelayed({
+            modulRestapi.requestHttp("/3/tv/${idtv}",{
+                val item = ItemResponseEntity(
+                    idtv,
+                    JSONObject(it).getString("original_name"),
+                    JSONObject(it).getString("first_air_date"),
+                    JSONObject(it).getString("overview"),
+                    JSONObject(it).getString("poster_path")
+                )
+                resultModules.value = ApiResponse.success(item)
+            },{
+                Log.d("test","error") // nothing
+            })
+            EspressoIdlingResource.decrement()
+        }, SERVICE_LATENCY_IN_MILLIS)
+        return resultModules
     }
-
-    interface LoadAllMovieCallback {
-        fun onAllMoviesReceived(moviesResponses: List<ItemResponseEntity>)
-    }
-
-    interface LoadAllTvCallback {
-        fun onAllTvsReceived(tvsResponses: List<ItemResponseEntity>)
-    }
-
-    interface LoadDetailMovieCallback {
-        fun onDetailMovieReceived(tvsResponses: ItemResponseEntity)
-    }
-
-    interface LoadDetailTvCallback {
-        fun onDetailTvReceived(tvsResponses: ItemResponseEntity)
-    }
-
 }

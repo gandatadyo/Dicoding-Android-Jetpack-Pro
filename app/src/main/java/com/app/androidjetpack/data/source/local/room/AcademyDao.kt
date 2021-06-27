@@ -13,9 +13,9 @@ interface AcademyDao {
 //    @Query("SELECT * FROM courseentities where bookmarked = 1")
 //    fun getBookmarkedCourse(): LiveData<List<ItemEntity>>
 
-//    @Transaction
-//    @Query("SELECT * FROM courseentities WHERE courseId = :courseId")
-//    fun getCourseWithModuleById(courseId: String): LiveData<CourseWithModule>
+    @Transaction
+    @Query("SELECT * FROM courseentities WHERE itemId = :courseId")
+    fun getCourseWithModuleById(courseId: String): LiveData<ItemEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCourses(courses: List<ItemEntity>)

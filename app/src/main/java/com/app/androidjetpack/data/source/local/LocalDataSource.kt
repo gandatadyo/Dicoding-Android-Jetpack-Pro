@@ -16,8 +16,8 @@ class LocalDataSource private constructor(private val mAcademyDao: AcademyDao) {
 
 //    fun getBookmarkedCourses(): LiveData<List<ItemEntity>> = mAcademyDao.getBookmarkedCourse()
 
-//    fun getCourseWithModules(courseId: String): LiveData<CourseWithModule> =
-//        mAcademyDao.getCourseWithModuleById(courseId)
+    fun getCourseWithModules(courseId: String): LiveData<ItemEntity> =
+        mAcademyDao.getCourseWithModuleById(courseId)
 
 //    fun getAllModulesByCourse(courseId: String): LiveData<List<ModuleEntity>> =
 //        mAcademyDao.getModulesByCourseId(courseId)
