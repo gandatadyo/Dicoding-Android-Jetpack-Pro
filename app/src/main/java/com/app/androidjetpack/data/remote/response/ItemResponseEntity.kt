@@ -3,7 +3,6 @@ package com.app.androidjetpack.data.remote.response
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
-
 @Parcelize
 data class ItemResponseEntity(
     var itemId: String,

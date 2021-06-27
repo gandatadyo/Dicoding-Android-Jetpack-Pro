@@ -5,11 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.androidjetpack.databinding.FragmentMovieBinding
 import com.app.androidjetpack.utils.EspressoIdlingResource
 import com.app.androidjetpack.viewmodel.ViewModelFactory
+import com.app.androidjetpack.vo.Status
 
 class MovieFragment : Fragment() {
     private lateinit var fragmentMovieBinding: FragmentMovieBinding
@@ -28,20 +30,27 @@ class MovieFragment : Fragment() {
 
 
         if (activity != null) {
-            val factory = ViewModelFactory.getInstance()
+            val factory = ViewModelFactory.getInstance(requireContext())
             val viewModel = ViewModelProvider(this,factory)[MovieViewModel::class.java]
 
             val academyAdapter = MovieAdapter()
             EspressoIdlingResource.increment()
             fragmentMovieBinding.loadingView.visibility = View.VISIBLE
             viewModel.getMovies().observe(requireActivity(), { movies ->
-                if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
-                    //Memberitahukan bahwa tugas sudah selesai dijalankan
-                    EspressoIdlingResource.decrement()
+                if (movies != null) {
+                    when (movies.status) {
+                        Status.LOADING -> fragmentMovieBinding.loadingView.visibility = View.VISIBLE
+                        Status.SUCCESS -> {
+                            fragmentMovieBinding.loadingView.visibility = View.GONE
+                            academyAdapter.setMovies(movies.data)
+                            academyAdapter.notifyDataSetChanged()
+                        }
+                        Status.ERROR -> {
+                            fragmentMovieBinding.loadingView.visibility = View.GONE
+                            Toast.makeText(context, "Terjadi kesalahan", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
-                academyAdapter.setMovies(movies)
-                academyAdapter.notifyDataSetChanged()
-                fragmentMovieBinding.loadingView.visibility = View.GONE
             })
 
             with(fragmentMovieBinding.rvMovie) {

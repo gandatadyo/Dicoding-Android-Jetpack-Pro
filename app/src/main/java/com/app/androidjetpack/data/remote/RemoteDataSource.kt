@@ -1,16 +1,22 @@
 package com.app.androidjetpack.data.remote
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
-import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.app.androidjetpack.data.remote.response.ItemResponseEntity
-import com.app.androidjetpack.data.source.local.ItemEntity
+import com.app.androidjetpack.utils.EspressoIdlingResource
 import com.app.androidjetpack.utils.ModulRestapi
 import org.json.JSONException
 import org.json.JSONObject
 
 class RemoteDataSource private constructor(private val modulRestapi: ModulRestapi){
 
+    private val handler = Handler(Looper.getMainLooper())
+
     companion object {
+        private const val SERVICE_LATENCY_IN_MILLIS: Long = 2000
 
         @Volatile
         private var instance: RemoteDataSource? = null
@@ -21,55 +27,71 @@ class RemoteDataSource private constructor(private val modulRestapi: ModulRestap
             }
     }
 
-    fun getAllMovies(callback: LoadAllMovieCallback){
-        modulRestapi.requestHttp("/3/discover/movie",{
-            val movie = ArrayList<ItemResponseEntity>()
-            val list = JSONObject(it).getJSONArray("results")
-            for(i in 0 until list.length()){
-                try {
-                    movie.add(
-                        ItemResponseEntity(
-                            list.getJSONObject(i).getString("id"),
-                            list.getJSONObject(i).getString("original_title"),
-                            list.getJSONObject(i).getString("release_date"),
-                            list.getJSONObject(i).getString("overview"),
-                            list.getJSONObject(i).getString("backdrop_path"),
-                        )
+    fun getAllMovies():LiveData<ApiResponse<List<ItemResponseEntity>>> {
+        EspressoIdlingResource.increment()
+        val resultItems = MutableLiveData<ApiResponse<List<ItemResponseEntity>>>()
+        handler.postDelayed({
+            modulRestapi.requestHttp("/3/discover/movie",{
+                val movie = ArrayList<ItemResponseEntity>()
+                val list = JSONObject(it).getJSONArray("results")
+                for(i in 0 until list.length()){
+                    try {
+                        movie.add(
+                            ItemResponseEntity(
+                                list.getJSONObject(i).getString("id"),
+                                list.getJSONObject(i).getString("original_title"),
+                                list.getJSONObject(i).getString("release_date"),
+                                list.getJSONObject(i).getString("overview"),
+                                list.getJSONObject(i).getString("backdrop_path"),
+                            )
 
-                    )
-                }catch(e:JSONException){
-                    Log.d("error",e.toString())
+                        )
+                    }catch(e:JSONException){
+                        Log.d("error",e.toString())
+                    }
                 }
-            }
-            callback.onAllMoviesReceived(movie)
-        },{
-            Log.d("test","error") // nothing
-        })
+                resultItems.value = ApiResponse.success(movie)
+                EspressoIdlingResource.decrement()
+            },{
+                Log.d("test","error") // nothing
+                EspressoIdlingResource.decrement()
+            })
+
+        }, SERVICE_LATENCY_IN_MILLIS)
+        return resultItems
     }
 
-    fun getAllTv(callback: LoadAllTvCallback){
-        modulRestapi.requestHttp("/3/discover/tv",{
-            val tv = ArrayList<ItemResponseEntity>()
-            val list = JSONObject(it).getJSONArray("results")
-            for(i in 0 until list.length()){
-                try {
-                    tv.add(
-                        ItemResponseEntity(
-                            list.getJSONObject(i).getString("id"),
-                            list.getJSONObject(i).getString("original_name"),
-                            list.getJSONObject(i).getString("first_air_date"),
-                            list.getJSONObject(i).getString("overview"),
-                            list.getJSONObject(i).getString("backdrop_path"),
+    fun getAllTv():LiveData<ApiResponse<List<ItemResponseEntity>>>{
+        EspressoIdlingResource.increment()
+        val resultItems = MutableLiveData<ApiResponse<List<ItemResponseEntity>>>()
+        handler.postDelayed({
+            modulRestapi.requestHttp("/3/discover/tv",{
+                val tv = ArrayList<ItemResponseEntity>()
+                val list = JSONObject(it).getJSONArray("results")
+                for(i in 0 until list.length()){
+                    try {
+                        tv.add(
+                            ItemResponseEntity(
+                                list.getJSONObject(i).getString("id"),
+                                list.getJSONObject(i).getString("original_name"),
+                                list.getJSONObject(i).getString("first_air_date"),
+                                list.getJSONObject(i).getString("overview"),
+                                list.getJSONObject(i).getString("backdrop_path"),
+                            )
                         )
-                    )
-                }catch(e:JSONException){
-                    Log.d("error",e.toString())
+                    }catch(e:JSONException){
+                        Log.d("error",e.toString())
+                    }
                 }
-            }
-            callback.onAllTvsReceived(tv)
-        },{
-            Log.d("test","error") // nothing
-        })
+                resultItems.value = ApiResponse.success(tv)
+                EspressoIdlingResource.decrement()
+            },{
+                Log.d("test","error") // nothing
+                EspressoIdlingResource.decrement()
+            })
+
+        }, SERVICE_LATENCY_IN_MILLIS)
+        return resultItems
     }
 
     fun getDetailMovie(idtv:String,callback: LoadDetailMovieCallback){

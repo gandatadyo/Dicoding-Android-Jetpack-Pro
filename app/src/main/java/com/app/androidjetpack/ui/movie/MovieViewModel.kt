@@ -5,9 +5,10 @@ import androidx.lifecycle.ViewModel
 import com.app.androidjetpack.data.MyRepository
 import com.app.androidjetpack.data.remote.response.ItemResponseEntity
 import com.app.androidjetpack.data.source.local.ItemEntity
+import com.app.androidjetpack.vo.Resource
 
 class MovieViewModel(private val myRepository: MyRepository): ViewModel() {
 
-    fun getMovies(): LiveData<List<ItemEntity>> = myRepository.getAllMovie()
+    fun getMovies(): LiveData<Resource<List<ItemEntity>>> = myRepository.getAllMovie()
 
 }

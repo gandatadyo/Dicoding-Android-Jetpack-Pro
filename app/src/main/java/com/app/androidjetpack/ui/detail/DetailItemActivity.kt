@@ -31,7 +31,7 @@ class DetailItemActivity : AppCompatActivity() {
         setSupportActionBar(activityDetailBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val factory = ViewModelFactory.getInstance()
+        val factory = ViewModelFactory.getInstance(this)
         val viewModel = ViewModelProvider(this,factory)[DetailViewModel::class.java]
 
         val extras = intent.extras

@@ -2,43 +2,76 @@ package com.app.androidjetpack.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.app.androidjetpack.data.remote.ApiResponse
 import com.app.androidjetpack.data.remote.RemoteDataSource
 import com.app.androidjetpack.data.remote.response.ItemResponseEntity
 import com.app.androidjetpack.data.source.local.ItemEntity
+import com.app.androidjetpack.data.source.local.LocalDataSource
+import com.app.androidjetpack.utils.AppExecutors
+import com.app.androidjetpack.vo.Resource
 
-class MyRepository private constructor(private val remoteDataSource: RemoteDataSource):MyDataSource {
+class MyRepository private constructor(
+    private val remoteDataSource: RemoteDataSource,
+    private val localDataSource: LocalDataSource,
+    private val appExecutors: AppExecutors
+    ):MyDataSource {
 
     companion object {
         @Volatile
         private var instance: MyRepository? = null
 
-        fun getInstance(remoteData: RemoteDataSource): MyRepository =
+        fun getInstance(remoteData: RemoteDataSource,localData: LocalDataSource, appExecutors: AppExecutors): MyRepository =
             instance ?: synchronized(this) {
-                MyRepository(remoteData).apply { instance = this }
+                MyRepository(remoteData,localData,appExecutors).apply { instance = this }
             }
     }
 
-    override fun getAllMovie():LiveData<List<ItemEntity>> {
-        val movieResult = MutableLiveData<List<ItemEntity>>()
-        remoteDataSource.getAllMovies(object :RemoteDataSource.LoadAllMovieCallback{
-            override fun onAllMoviesReceived(moviesResponses: List<ItemResponseEntity>) {
-                val movieList = ArrayList<ItemEntity>()
-                for(response in moviesResponses){
-                    movieList.add(
-                        ItemEntity(
-                            response.itemId,
-                            response.title,
-                            response.dateItem,
-                            response.description,
-                            response.imagePath,
-                        )
-                    )
+    override fun getAllMovie():LiveData<Resource<List<ItemEntity>>>{
+        return object : NetworkBoundResource<List<ItemEntity>, List<ItemResponseEntity>>(appExecutors) {
+            public override fun loadFromDB(): LiveData<List<ItemEntity>> =
+                localDataSource.getAllCourses()
+            override fun shouldFetch(data: List<ItemEntity>?): Boolean =
+                data == null || data.isEmpty()
+            public override fun createCall(): LiveData<ApiResponse<List<ItemResponseEntity>>> =
+                remoteDataSource.getAllMovies()
+            public override fun saveCallResult(courseResponses: List<ItemResponseEntity>) {
+                val courseList = ArrayList<ItemEntity>()
+                for (response in courseResponses) {
+                    val course = ItemEntity(response.itemId,
+                        response.title,
+                        response.description,
+                        response.dateItem,
+                        response.imagePath)
+                    courseList.add(course)
                 }
-                movieResult.postValue(movieList)
-            }
 
-        })
-        return movieResult
+                localDataSource.insertCourses(courseList)
+            }
+        }.asLiveData()
+    }
+
+    override fun getAllTv():LiveData<Resource<List<ItemEntity>>>{
+        return object : NetworkBoundResource<List<ItemEntity>, List<ItemResponseEntity>>(appExecutors) {
+            public override fun loadFromDB(): LiveData<List<ItemEntity>> =
+                localDataSource.getAllCourses()
+            override fun shouldFetch(data: List<ItemEntity>?): Boolean =
+                data == null || data.isEmpty()
+            public override fun createCall(): LiveData<ApiResponse<List<ItemResponseEntity>>> =
+                remoteDataSource.getAllTv()
+            public override fun saveCallResult(courseResponses: List<ItemResponseEntity>) {
+                val courseList = ArrayList<ItemEntity>()
+                for (response in courseResponses) {
+                    val course = ItemEntity(response.itemId,
+                        response.title,
+                        response.description,
+                        response.dateItem,
+                        response.imagePath)
+                    courseList.add(course)
+                }
+
+                localDataSource.insertCourses(courseList)
+            }
+        }.asLiveData()
     }
 
     override fun getDetailMovie(idmovie:String):LiveData<ItemEntity>{
@@ -57,28 +90,6 @@ class MyRepository private constructor(private val remoteDataSource: RemoteDataS
             }
         })
         return movieResult
-    }
-
-    override fun getAllTv():LiveData<List<ItemEntity>>{
-        val tvResult = MutableLiveData<List<ItemEntity>>()
-        remoteDataSource.getAllTv(object :RemoteDataSource.LoadAllTvCallback{
-            override fun onAllTvsReceived(tvsResponses: List<ItemResponseEntity>) {
-                val tvlist = ArrayList<ItemEntity>()
-                for(response in tvsResponses){
-                    tvlist.add(
-                        ItemEntity(
-                            response.itemId,
-                            response.title,
-                            response.dateItem,
-                            response.description,
-                            response.imagePath,
-                        )
-                    )
-                }
-                tvResult.postValue(tvlist)
-            }
-        })
-        return tvResult
     }
 
     override fun getDetailTV(idtv:String):LiveData<ItemEntity>{

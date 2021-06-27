@@ -22,7 +22,7 @@ class LocalDataSource private constructor(private val mAcademyDao: AcademyDao) {
 //    fun getAllModulesByCourse(courseId: String): LiveData<List<ModuleEntity>> =
 //        mAcademyDao.getModulesByCourseId(courseId)
 
-//    fun insertCourses(courses: List<ItemEntity>) = mAcademyDao.insertCourses(courses)
+    fun insertCourses(courses: List<ItemEntity>) = mAcademyDao.insertCourses(courses)
 
 //    fun insertModules(modules: List<ModuleEntity>) = mAcademyDao.insertModules(modules)
 
