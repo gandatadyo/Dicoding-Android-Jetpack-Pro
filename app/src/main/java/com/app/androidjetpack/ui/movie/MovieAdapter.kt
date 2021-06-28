@@ -5,8 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.androidjetpack.R
-import com.app.androidjetpack.data.remote.response.ItemResponseEntity
-import com.app.androidjetpack.data.source.local.ItemEntity
+import com.app.androidjetpack.data.source.local.entity.ItemEntity
 import com.app.androidjetpack.databinding.ItemMovieBinding
 import com.app.androidjetpack.ui.detail.DetailItemActivity
 import com.bumptech.glide.Glide

@@ -1,4 +1,4 @@
-package com.app.androidjetpack.data.source.local
+package com.app.androidjetpack.data.source.local.entity
 
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
@@ -22,5 +22,9 @@ data class ItemEntity(
     var description: String,
 
     @ColumnInfo(name = "imagePath")
-    var imagePath: String
+    var imagePath: String,
+
+    @ColumnInfo(name = "bookmarked")
+    var bookmarked: Boolean = false
+
 )

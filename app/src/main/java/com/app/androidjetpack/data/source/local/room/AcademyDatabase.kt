@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.app.androidjetpack.data.source.local.ItemEntity
+import com.app.androidjetpack.data.source.local.entity.ItemEntity
 
 @Database(entities = [ItemEntity::class],
     version = 1,

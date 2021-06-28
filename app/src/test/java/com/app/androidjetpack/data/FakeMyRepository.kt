@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.app.androidjetpack.data.remote.RemoteDataSource
 import com.app.androidjetpack.data.remote.response.ItemResponseEntity
-import com.app.androidjetpack.data.source.local.ItemEntity
+import com.app.androidjetpack.data.source.local.entity.ItemEntity
 
 class FakeMyRepository (private val remoteDataSource: RemoteDataSource):MyDataSource {
 

@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.app.androidjetpack.R
-import com.app.androidjetpack.data.source.local.ItemEntity
+import com.app.androidjetpack.data.source.local.entity.ItemEntity
 import com.app.androidjetpack.databinding.ActivityDetailItemBinding
 import com.app.androidjetpack.databinding.ContentDetailBinding
-import com.app.androidjetpack.utils.EspressoIdlingResource
 import com.app.androidjetpack.viewmodel.ViewModelFactory
 import com.app.androidjetpack.vo.Status
 import com.bumptech.glide.Glide
@@ -47,33 +47,44 @@ class DetailItemActivity : AppCompatActivity() {
             val itemId = extras.getString(EXTRA_ITEM)
             val mode = extras.getString(EXTRA_MODE)
             if (itemId != null && mode != null) {
-
+                viewModel.setSelectedCourse(itemId)
                 if(mode=="movie"){
                     supportActionBar?.title = "Detail Movie"
-                    EspressoIdlingResource.increment()
                     detailContentBinding.loadingView.visibility = View.VISIBLE
-                    viewModel.getDetailMovies(itemId).observe(this, { movie ->
-                        detailContentBinding.loadingView.visibility = View.GONE
-                        if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
-                            //Memberitahukan bahwa tugas sudah selesai dijalankan
-                            EspressoIdlingResource.decrement()
+                    viewModel.itemModule.observe(this, { movie ->
+                        if (movie != null) {
+                            when (movie.status) {
+                                Status.LOADING -> detailContentBinding.loadingView.visibility = View.VISIBLE
+                                Status.SUCCESS -> if (movie.data != null) {
+                                    detailContentBinding.loadingView.visibility = View.GONE
+                                    movie.data?.let { populateItemMovie(it) }
+                                }
+                                Status.ERROR -> {
+                                    detailContentBinding.loadingView.visibility = View.GONE
+                                    Toast.makeText(applicationContext, "Terjadi kesalahan", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         }
-                        populateItemMovie(movie)
                     })
                 }else if(mode=="tv"){
                     supportActionBar?.title = "Detail TV"
-                    EspressoIdlingResource.increment()
                     detailContentBinding.loadingView.visibility = View.VISIBLE
-                    viewModel.getDetailTvs(itemId).observe(this, { tv ->
-                        detailContentBinding.loadingView.visibility = View.GONE
-                        if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
-                            //Memberitahukan bahwa tugas sudah selesai dijalankan
-                            EspressoIdlingResource.decrement()
+                    viewModel.itemModule.observe(this, { movie ->
+                        if (movie != null) {
+                            when (movie.status) {
+                                Status.LOADING -> detailContentBinding.loadingView.visibility = View.VISIBLE
+                                Status.SUCCESS -> if (movie.data != null) {
+                                    detailContentBinding.loadingView.visibility = View.GONE
+                                    movie.data?.let { populateItemTv(it) }
+                                }
+                                Status.ERROR -> {
+                                    detailContentBinding.loadingView.visibility = View.GONE
+                                    Toast.makeText(applicationContext, "Terjadi kesalahan", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         }
-                        populateItemTv(tv)
                     })
                 }
-
             }
         }
     }
@@ -95,17 +106,17 @@ class DetailItemActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_detail, menu)
         this.menu = menu
-        viewModel.courseModule.observe(this, { courseWithModule ->
+        viewModel.itemModule.observe(this, { courseWithModule ->
             if (courseWithModule != null) {
                 when (courseWithModule.status) {
-                    Status.LOADING -> activityDetailCourseBinding.progressBar.visibility = View.VISIBLE
+                    Status.LOADING -> detailContentBinding.loadingView.visibility = View.VISIBLE
                     Status.SUCCESS -> if (courseWithModule.data != null) {
-                        activityDetailCourseBinding.progressBar.visibility = View.GONE
-                        val state = courseWithModule.data.mCourse.bookmarked
+                        detailContentBinding.loadingView.visibility = View.GONE
+                        val state = courseWithModule.data.bookmarked
                         setBookmarkState(state)
                     }
                     Status.ERROR -> {
-                        activityDetailCourseBinding.progressBar.visibility = View.GONE
+                        detailContentBinding.loadingView.visibility = View.GONE
                         Toast.makeText(applicationContext, "Terjadi kesalahan", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -113,6 +124,7 @@ class DetailItemActivity : AppCompatActivity() {
         })
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_bookmark) {
             viewModel.setBookmark()

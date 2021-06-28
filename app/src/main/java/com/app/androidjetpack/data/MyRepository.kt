@@ -1,11 +1,10 @@
 package com.app.androidjetpack.data
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.app.androidjetpack.data.remote.ApiResponse
 import com.app.androidjetpack.data.remote.RemoteDataSource
 import com.app.androidjetpack.data.remote.response.ItemResponseEntity
-import com.app.androidjetpack.data.source.local.ItemEntity
+import com.app.androidjetpack.data.source.local.entity.ItemEntity
 import com.app.androidjetpack.data.source.local.LocalDataSource
 import com.app.androidjetpack.utils.AppExecutors
 import com.app.androidjetpack.vo.Resource
@@ -75,21 +74,21 @@ class MyRepository private constructor(
     }
 
     override fun getDetailMovie(idmovie:String):LiveData<Resource<ItemEntity>>{
-//        val movieResult = MutableLiveData<ItemEntity>()
-//        remoteDataSource.getDetailMovie(idmovie,object :RemoteDataSource.LoadDetailMovieCallback{
-//            override fun onDetailMovieReceived(tvsResponses: ItemResponseEntity) {
-//                movieResult.postValue(
-//                    ItemEntity(
-//                        tvsResponses.itemId,
-//                        tvsResponses.title,
-//                        tvsResponses.dateItem,
-//                        tvsResponses.description,
-//                        tvsResponses.imagePath,
-//                    )
-//                )
-//            }
-//        })
-//        return movieResult
+        val movieResult = MutableLiveData<ItemEntity>()
+        remoteDataSource.getDetailMovie(idmovie,object :RemoteDataSource.LoadDetailMovieCallback{
+            override fun onDetailMovieReceived(tvsResponses: ItemResponseEntity) {
+                movieResult.postValue(
+                    ItemEntity(
+                        tvsResponses.itemId,
+                        tvsResponses.title,
+                        tvsResponses.dateItem,
+                        tvsResponses.description,
+                        tvsResponses.imagePath,
+                    )
+                )
+            }
+        })
+        return movieResult
         return object : NetworkBoundResource<ItemEntity,ItemResponseEntity>(appExecutors) {
             override fun loadFromDB(): LiveData<ItemEntity> =
                 localDataSource.getModuleWithContent(idmovie)
@@ -132,5 +131,8 @@ class MyRepository private constructor(
             }
         }.asLiveData()
     }
+
+    override fun setCourseBookmark(course: ItemEntity, state: Boolean) =
+        appExecutors.diskIO().execute { localDataSource.setCourseBookmark(course, state) }
 
 }

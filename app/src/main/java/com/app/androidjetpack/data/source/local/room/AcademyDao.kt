@@ -2,7 +2,7 @@ package com.app.androidjetpack.data.source.local.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.app.androidjetpack.data.source.local.ItemEntity
+import com.app.androidjetpack.data.source.local.entity.ItemEntity
 
 @Dao
 interface AcademyDao {

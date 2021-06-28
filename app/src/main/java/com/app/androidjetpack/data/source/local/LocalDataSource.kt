@@ -1,6 +1,7 @@
 package com.app.androidjetpack.data.source.local
 
 import androidx.lifecycle.LiveData
+import com.app.androidjetpack.data.source.local.entity.ItemEntity
 import com.app.androidjetpack.data.source.local.room.AcademyDao
 
 class LocalDataSource private constructor(private val mAcademyDao: AcademyDao) {
@@ -26,10 +27,10 @@ class LocalDataSource private constructor(private val mAcademyDao: AcademyDao) {
 
 //    fun insertModules(modules: List<ModuleEntity>) = mAcademyDao.insertModules(modules)
 
-//    fun setCourseBookmark(course: ItemEntity, newState: Boolean) {
-//        course.bookmarked = newState
-//        mAcademyDao.updateCourse(course)
-//    }
+    fun setCourseBookmark(course: ItemEntity, newState: Boolean) {
+        course.bookmarked = newState
+        mAcademyDao.updateCourse(course)
+    }
 
 //    fun getModuleWithContent(moduleId: String): LiveData<ModuleEntity> =
 //        mAcademyDao.getModuleById(moduleId)
