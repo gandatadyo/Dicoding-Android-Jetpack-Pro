@@ -48,6 +48,8 @@ class DetailItemActivity : AppCompatActivity() {
             val mode = extras.getString(EXTRA_MODE)
             if (itemId != null && mode != null) {
                 viewModel.setSelectedCourse(itemId)
+
+
                 if(mode=="movie"){
                     supportActionBar?.title = "Detail Movie"
                     detailContentBinding.loadingView.visibility = View.VISIBLE
@@ -57,7 +59,7 @@ class DetailItemActivity : AppCompatActivity() {
                                 Status.LOADING -> detailContentBinding.loadingView.visibility = View.VISIBLE
                                 Status.SUCCESS -> if (movie.data != null) {
                                     detailContentBinding.loadingView.visibility = View.GONE
-                                    movie.data?.let { populateItemMovie(it) }
+                                    movie.data?.let { populateItem(it) }
                                 }
                                 Status.ERROR -> {
                                     detailContentBinding.loadingView.visibility = View.GONE
@@ -75,7 +77,7 @@ class DetailItemActivity : AppCompatActivity() {
                                 Status.LOADING -> detailContentBinding.loadingView.visibility = View.VISIBLE
                                 Status.SUCCESS -> if (movie.data != null) {
                                     detailContentBinding.loadingView.visibility = View.GONE
-                                    movie.data?.let { populateItemTv(it) }
+                                    movie.data?.let { populateItem(it) }
                                 }
                                 Status.ERROR -> {
                                     detailContentBinding.loadingView.visibility = View.GONE
@@ -85,18 +87,13 @@ class DetailItemActivity : AppCompatActivity() {
                         }
                     })
                 }
+
+
             }
         }
     }
 
-    private fun populateItemMovie(item: ItemEntity) {
-        detailContentBinding.textTitle.text = item.title
-        detailContentBinding.textDescription.text = item.description
-        detailContentBinding.textDate.text = resources.getString(R.string.info_date, item.dateItem)
-        Glide.with(this).load(urlimg+item.imagePath).into(detailContentBinding.imagePoster)
-    }
-
-    private fun populateItemTv(item: ItemEntity) {
+    private fun populateItem(item: ItemEntity) {
         detailContentBinding.textTitle.text = item.title
         detailContentBinding.textDescription.text = item.description
         detailContentBinding.textDate.text = resources.getString(R.string.info_date, item.dateItem)

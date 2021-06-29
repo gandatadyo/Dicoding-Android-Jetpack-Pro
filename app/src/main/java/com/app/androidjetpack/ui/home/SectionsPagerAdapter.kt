@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.app.androidjetpack.R
+import com.app.androidjetpack.ui.bookmark.BookmarkFragment
 import com.app.androidjetpack.ui.movie.MovieFragment
 import com.app.androidjetpack.ui.tv.TvFragment
 
@@ -16,7 +17,7 @@ class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager):F
         private val TAB_TITLES = intArrayOf(R.string.home, R.string.tvshow)
     }
 
-    override fun getCount(): Int = 2
+    override fun getCount(): Int = 3
 
     override fun getPageTitle(position: Int): CharSequence? = mContext.resources.getString(TAB_TITLES[position])
 
@@ -25,6 +26,7 @@ class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager):F
         when (position) {
             0 -> fragment = MovieFragment()
             1 -> fragment = TvFragment()
+            2 -> fragment = BookmarkFragment()
             else -> Fragment()
         }
         return fragment

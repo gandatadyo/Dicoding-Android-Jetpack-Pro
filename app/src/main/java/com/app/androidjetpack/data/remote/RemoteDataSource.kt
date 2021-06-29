@@ -116,16 +116,9 @@ class RemoteDataSource private constructor(private val modulRestapi: ModulRestap
         return resultModules
     }
 
-    fun getDetailTv(idtv:String):LiveData<ApiResponse<List<ItemResponseEntity>>> {
-//        val resultModules = MutableLiveData<ApiResponse<ItemResponseEntity>>()
-//        handler.postDelayed({
-//
-//            EspressoIdlingResource.decrement()
-//        }, SERVICE_LATENCY_IN_MILLIS)
-//        return resultModules
-
+    fun getDetailTv(idtv:String):LiveData<ApiResponse<ItemResponseEntity>> {
         EspressoIdlingResource.increment()
-        val resultModules = MutableLiveData<ApiResponse<List<ItemResponseEntity>>>()
+        val resultModules = MutableLiveData<ApiResponse<ItemResponseEntity>>()
         handler.postDelayed({
             modulRestapi.requestHttp("/3/tv/${idtv}",{
                 val item = ItemResponseEntity(
@@ -136,10 +129,11 @@ class RemoteDataSource private constructor(private val modulRestapi: ModulRestap
                     JSONObject(it).getString("poster_path")
                 )
                 resultModules.value = ApiResponse.success(item)
+                EspressoIdlingResource.decrement()
             },{
                 Log.d("test","error") // nothing
+                EspressoIdlingResource.decrement()
             })
-            EspressoIdlingResource.decrement()
         }, SERVICE_LATENCY_IN_MILLIS)
         return resultModules
     }

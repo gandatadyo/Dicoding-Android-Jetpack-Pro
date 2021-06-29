@@ -1,4 +1,4 @@
-package com.app.androidjetpack.ui.movie
+package com.app.androidjetpack.ui.bookmark
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,21 +8,23 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.app.androidjetpack.databinding.FragmentMovieBinding
+import com.app.androidjetpack.databinding.FragmentBookmarkBinding
+import com.app.androidjetpack.ui.movie.MovieAdapter
+import com.app.androidjetpack.ui.movie.MovieViewModel
 import com.app.androidjetpack.utils.EspressoIdlingResource
 import com.app.androidjetpack.viewmodel.ViewModelFactory
 import com.app.androidjetpack.vo.Status
 
-class MovieFragment : Fragment() {
-    private lateinit var fragmentMovieBinding: FragmentMovieBinding
+class BookmarkFragment : Fragment() {
+    private lateinit var fragmentBookmarkBinding: FragmentBookmarkBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentMovieBinding = FragmentMovieBinding.inflate(layoutInflater, container, false)
-        fragmentMovieBinding.loadingView.visibility = View.GONE
-        return fragmentMovieBinding.root
+        fragmentBookmarkBinding = FragmentBookmarkBinding.inflate(layoutInflater, container, false)
+        fragmentBookmarkBinding.loadingView.visibility = View.GONE
+        return fragmentBookmarkBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,25 +36,25 @@ class MovieFragment : Fragment() {
 
             val academyAdapter = MovieAdapter()
             EspressoIdlingResource.increment()
-            fragmentMovieBinding.loadingView.visibility = View.VISIBLE
+            fragmentBookmarkBinding.loadingView.visibility = View.VISIBLE
             viewModel.getMovies().observe(requireActivity(), { movies ->
                 if (movies != null) {
                     when (movies.status) {
-                        Status.LOADING -> fragmentMovieBinding.loadingView.visibility = View.VISIBLE
+                        Status.LOADING -> fragmentBookmarkBinding.loadingView.visibility = View.VISIBLE
                         Status.SUCCESS -> {
-                            fragmentMovieBinding.loadingView.visibility = View.GONE
+                            fragmentBookmarkBinding.loadingView.visibility = View.GONE
                             academyAdapter.setMovies(movies.data)
                             academyAdapter.notifyDataSetChanged()
                         }
                         Status.ERROR -> {
-                            fragmentMovieBinding.loadingView.visibility = View.GONE
+                            fragmentBookmarkBinding.loadingView.visibility = View.GONE
                             Toast.makeText(context, "Terjadi kesalahan", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
             })
 
-            with(fragmentMovieBinding.rvMovie) {
+            with(fragmentBookmarkBinding.rvBookmark) {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
                 adapter = academyAdapter

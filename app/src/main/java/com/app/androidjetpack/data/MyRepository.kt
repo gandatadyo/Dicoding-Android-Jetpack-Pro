@@ -86,45 +86,41 @@ class MyRepository private constructor(
 
             override fun saveCallResult(moduleResponses: ItemResponseEntity) {
                 val moduleList = ArrayList<ItemEntity>()
-                for (response in moduleResponses) {
-                    val course = ItemEntity(response.itemId,
-                        response.title,
-                        response.dateItem,
-                        response.description,
-                        response.imagePath)
-
-                    moduleList.add(course)
-                }
-
-                localDataSource.insertModules(moduleList)
+                val course = ItemEntity(
+                    moduleResponses.itemId,
+                    moduleResponses.title,
+                    moduleResponses.dateItem,
+                    moduleResponses.description,
+                    moduleResponses.imagePath
+                )
+                moduleList.add(course)
+                localDataSource.insertCourses(moduleList)
             }
         }.asLiveData()
     }
 
     override fun getDetailTV(idtv:String):LiveData<Resource<ItemEntity>>{
-        return object : NetworkBoundResource<ItemEntity, List<ItemResponseEntity>>(appExecutors) {
+        return object : NetworkBoundResource<ItemEntity, ItemResponseEntity>(appExecutors) {
             override fun loadFromDB(): LiveData<ItemEntity> =
                 localDataSource.getCourseWithModules(idtv)
 
             override fun shouldFetch(courseWithModule: ItemEntity?): Boolean =
                 courseWithModule?.itemId == null || courseWithModule.itemId.isEmpty()
 
-            override fun createCall(): LiveData<ApiResponse<List<ItemResponseEntity>>> =
+            override fun createCall(): LiveData<ApiResponse<ItemResponseEntity>> =
                 remoteDataSource.getDetailTv(idtv)
 
-            override fun saveCallResult(moduleResponses: List<ItemResponseEntity>) {
+            override fun saveCallResult(moduleResponses: ItemResponseEntity) {
                 val moduleList = ArrayList<ItemEntity>()
-                for (response in moduleResponses) {
-                    val course = ItemEntity(response.itemId,
-                        response.title,
-                        response.dateItem,
-                        response.description,
-                        response.imagePath)
-
-                    moduleList.add(course)
-                }
-
-                localDataSource.insertModules(moduleList)
+                val course = ItemEntity(
+                    moduleResponses.itemId,
+                    moduleResponses.title,
+                    moduleResponses.dateItem,
+                    moduleResponses.description,
+                    moduleResponses.imagePath
+                )
+                moduleList.add(course)
+                localDataSource.insertCourses(moduleList)
             }
         }.asLiveData()
     }
