@@ -10,8 +10,8 @@ interface AcademyDao {
     @Query("SELECT * FROM courseentities")
     fun getCourses(): LiveData<List<ItemEntity>>
 
-//    @Query("SELECT * FROM courseentities where bookmarked = 1")
-//    fun getBookmarkedCourse(): LiveData<List<ItemEntity>>
+    @Query("SELECT * FROM courseentities where bookmarked = 1")
+    fun getBookmarkedCourse(): LiveData<List<ItemEntity>>
 
     @Transaction
     @Query("SELECT * FROM courseentities WHERE itemId = :courseId")

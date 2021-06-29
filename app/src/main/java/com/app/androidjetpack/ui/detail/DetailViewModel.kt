@@ -28,7 +28,7 @@ class DetailViewModel(private val myRepository: MyRepository):ViewModel() {
         if (moduleResource != null) {
             val courseWithModule = moduleResource.data
             if (courseWithModule != null) {
-                val courseEntity = courseWithModule.data
+                val courseEntity = courseWithModule
                 val newState = !courseEntity.bookmarked
                 myRepository.setCourseBookmark(courseEntity, newState)
             }

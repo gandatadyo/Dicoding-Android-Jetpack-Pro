@@ -14,4 +14,7 @@ interface MyDataSource {
 
     fun getDetailTV(idtv:String): LiveData<Resource<ItemEntity>>
 
+    fun getBookmarkedCourses(): LiveData<List<ItemEntity>>
+
+    fun setCourseBookmark(course: ItemEntity, state: Boolean)
 }

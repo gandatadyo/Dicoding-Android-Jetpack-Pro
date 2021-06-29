@@ -74,46 +74,15 @@ class MyRepository private constructor(
     }
 
     override fun getDetailMovie(idmovie:String):LiveData<Resource<ItemEntity>>{
-        val movieResult = MutableLiveData<ItemEntity>()
-        remoteDataSource.getDetailMovie(idmovie,object :RemoteDataSource.LoadDetailMovieCallback{
-            override fun onDetailMovieReceived(tvsResponses: ItemResponseEntity) {
-                movieResult.postValue(
-                    ItemEntity(
-                        tvsResponses.itemId,
-                        tvsResponses.title,
-                        tvsResponses.dateItem,
-                        tvsResponses.description,
-                        tvsResponses.imagePath,
-                    )
-                )
-            }
-        })
-        return movieResult
-        return object : NetworkBoundResource<ItemEntity,ItemResponseEntity>(appExecutors) {
-            override fun loadFromDB(): LiveData<ItemEntity> =
-                localDataSource.getModuleWithContent(idmovie)
-
-            override fun shouldFetch(moduleEntity: ModuleEntity?): Boolean =
-                moduleEntity?.contentEntity == null
-
-            override fun createCall(): LiveData<ApiResponse<ContentResponse>> =
-                remoteDataSource.getContent(moduleId)
-
-            override fun saveCallResult(contentResponse: ContentResponse) =
-                localDataSource.updateContent(contentResponse.content.toString(), moduleId)
-        }.asLiveData()
-    }
-
-    override fun getDetailTV(idtv:String):LiveData<Resource<ItemEntity>>{
         return object : NetworkBoundResource<ItemEntity, ItemResponseEntity>(appExecutors) {
             override fun loadFromDB(): LiveData<ItemEntity> =
-                localDataSource.getCourseWithModules(idtv)
+                localDataSource.getCourseWithModules(idmovie)
 
             override fun shouldFetch(courseWithModule: ItemEntity?): Boolean =
                 courseWithModule?.itemId == null || courseWithModule.itemId.isEmpty()
 
             override fun createCall(): LiveData<ApiResponse<ItemResponseEntity>> =
-                remoteDataSource.getDetailTv(idtv)
+                remoteDataSource.getDetailMovie(idmovie)
 
             override fun saveCallResult(moduleResponses: ItemResponseEntity) {
                 val moduleList = ArrayList<ItemEntity>()
@@ -130,6 +99,38 @@ class MyRepository private constructor(
                 localDataSource.insertModules(moduleList)
             }
         }.asLiveData()
+    }
+
+    override fun getDetailTV(idtv:String):LiveData<Resource<ItemEntity>>{
+        return object : NetworkBoundResource<ItemEntity, List<ItemResponseEntity>>(appExecutors) {
+            override fun loadFromDB(): LiveData<ItemEntity> =
+                localDataSource.getCourseWithModules(idtv)
+
+            override fun shouldFetch(courseWithModule: ItemEntity?): Boolean =
+                courseWithModule?.itemId == null || courseWithModule.itemId.isEmpty()
+
+            override fun createCall(): LiveData<ApiResponse<List<ItemResponseEntity>>> =
+                remoteDataSource.getDetailTv(idtv)
+
+            override fun saveCallResult(moduleResponses: List<ItemResponseEntity>) {
+                val moduleList = ArrayList<ItemEntity>()
+                for (response in moduleResponses) {
+                    val course = ItemEntity(response.itemId,
+                        response.title,
+                        response.dateItem,
+                        response.description,
+                        response.imagePath)
+
+                    moduleList.add(course)
+                }
+
+                localDataSource.insertModules(moduleList)
+            }
+        }.asLiveData()
+    }
+
+    override fun getBookmarkedCourses(): LiveData<List<ItemEntity>> {
+        TODO("Not yet implemented")
     }
 
     override fun setCourseBookmark(course: ItemEntity, state: Boolean) =
