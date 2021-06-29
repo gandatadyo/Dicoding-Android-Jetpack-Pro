@@ -1,6 +1,7 @@
 package com.app.androidjetpack.data.source.local
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import com.app.androidjetpack.data.source.local.entity.ItemEntity
 import com.app.androidjetpack.data.source.local.room.AcademyDao
 
@@ -13,9 +14,10 @@ class LocalDataSource private constructor(private val mAcademyDao: AcademyDao) {
             INSTANCE ?: LocalDataSource(academyDao)
     }
 
-    fun getAllCourses(): LiveData<List<ItemEntity>> = mAcademyDao.getCourses()
+    fun getAllCourses(): DataSource.Factory<Int, ItemEntity> = mAcademyDao.getCourses()
 
-    fun getBookmarkedCourses(): LiveData<List<ItemEntity>> = mAcademyDao.getBookmarkedCourse()
+    fun getBookmarkedCourses(): DataSource.Factory<Int, ItemEntity> = mAcademyDao.getBookmarkedCourse()
+
 
     fun getCourseWithModules(courseId: String): LiveData<ItemEntity> =
         mAcademyDao.getCourseWithModuleById(courseId)

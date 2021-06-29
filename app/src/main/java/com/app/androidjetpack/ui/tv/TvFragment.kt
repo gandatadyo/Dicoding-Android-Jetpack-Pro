@@ -41,6 +41,7 @@ class TvFragment : Fragment() {
                         Status.LOADING -> fragmentTvBinding.loadingView.visibility = View.VISIBLE
                         Status.SUCCESS -> {
                             fragmentTvBinding.loadingView.visibility = View.GONE
+                            academyAdapter.submitList(tvs.data)
                             academyAdapter.setTvs(tvs.data)
                             academyAdapter.notifyDataSetChanged()
                         }

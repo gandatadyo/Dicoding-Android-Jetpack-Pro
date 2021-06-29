@@ -3,6 +3,8 @@ package com.app.androidjetpack.ui.tv
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.androidjetpack.R
 import com.app.androidjetpack.data.source.local.entity.ItemEntity
@@ -11,7 +13,19 @@ import com.app.androidjetpack.ui.detail.DetailItemActivity
 import com.bumptech.glide.Glide
 import java.util.ArrayList
 
-class TvAdapter: RecyclerView.Adapter<TvAdapter.TvViewHolder>()  {
+class TvAdapter: PagedListAdapter<ItemEntity, TvAdapter.TvViewHolder>(DIFF_CALLBACK) {
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ItemEntity>() {
+            override fun areItemsTheSame(oldItem: ItemEntity, newItem: ItemEntity): Boolean {
+                return oldItem.itemId == newItem.itemId
+            }
+            override fun areContentsTheSame(oldItem: ItemEntity, newItem: ItemEntity): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
+
     private var listMovies = ArrayList<ItemEntity>()
 
     fun setTvs(items: List<ItemEntity>?) {

@@ -1,6 +1,7 @@
 package com.app.androidjetpack.data.source.local.room
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.*
 import com.app.androidjetpack.data.source.local.entity.ItemEntity
 
@@ -8,10 +9,10 @@ import com.app.androidjetpack.data.source.local.entity.ItemEntity
 interface AcademyDao {
 
     @Query("SELECT * FROM courseentities")
-    fun getCourses(): LiveData<List<ItemEntity>>
+    fun getCourses(): DataSource.Factory<Int, ItemEntity>
 
     @Query("SELECT * FROM courseentities where bookmarked = 1")
-    fun getBookmarkedCourse(): LiveData<List<ItemEntity>>
+    fun getBookmarkedCourse(): DataSource.Factory<Int, ItemEntity>
 
     @Transaction
     @Query("SELECT * FROM courseentities WHERE itemId = :courseId")

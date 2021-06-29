@@ -1,6 +1,8 @@
 package com.app.androidjetpack.data
 
 import androidx.lifecycle.LiveData
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.app.androidjetpack.data.remote.ApiResponse
 import com.app.androidjetpack.data.remote.RemoteDataSource
 import com.app.androidjetpack.data.remote.response.ItemResponseEntity
@@ -25,11 +27,17 @@ class MyRepository private constructor(
             }
     }
 
-    override fun getAllMovie():LiveData<Resource<List<ItemEntity>>>{
-        return object : NetworkBoundResource<List<ItemEntity>, List<ItemResponseEntity>>(appExecutors) {
-            public override fun loadFromDB(): LiveData<List<ItemEntity>> =
-                localDataSource.getAllCourses()
-            override fun shouldFetch(data: List<ItemEntity>?): Boolean =
+    override fun getAllMovie():LiveData<Resource<PagedList<ItemEntity>>>{
+        return object : NetworkBoundResource<PagedList<ItemEntity>, List<ItemResponseEntity>>(appExecutors) {
+            public override fun loadFromDB(): LiveData<PagedList<ItemEntity>> {
+                    val config = PagedList.Config.Builder()
+                        .setEnablePlaceholders(false)
+                        .setInitialLoadSizeHint(4)
+                        .setPageSize(4)
+                        .build()
+                    return LivePagedListBuilder(localDataSource.getAllCourses(), config).build()
+            }
+            override fun shouldFetch(data: PagedList<ItemEntity>?): Boolean =
                 data == null || data.isEmpty()
             public override fun createCall(): LiveData<ApiResponse<List<ItemResponseEntity>>> =
                 remoteDataSource.getAllMovies()
@@ -49,11 +57,17 @@ class MyRepository private constructor(
         }.asLiveData()
     }
 
-    override fun getAllTv():LiveData<Resource<List<ItemEntity>>>{
-        return object : NetworkBoundResource<List<ItemEntity>, List<ItemResponseEntity>>(appExecutors) {
-            public override fun loadFromDB(): LiveData<List<ItemEntity>> =
-                localDataSource.getAllCourses()
-            override fun shouldFetch(data: List<ItemEntity>?): Boolean =
+    override fun getAllTv():LiveData<Resource<PagedList<ItemEntity>>>{
+        return object : NetworkBoundResource<PagedList<ItemEntity>, List<ItemResponseEntity>>(appExecutors) {
+            public override fun loadFromDB(): LiveData<PagedList<ItemEntity>> {
+                val config = PagedList.Config.Builder()
+                    .setEnablePlaceholders(false)
+                    .setInitialLoadSizeHint(4)
+                    .setPageSize(4)
+                    .build()
+                return LivePagedListBuilder(localDataSource.getAllCourses(), config).build()
+            }
+            override fun shouldFetch(data: PagedList<ItemEntity>?): Boolean =
                 data == null || data.isEmpty()
             public override fun createCall(): LiveData<ApiResponse<List<ItemResponseEntity>>> =
                 remoteDataSource.getAllTv()
@@ -125,8 +139,13 @@ class MyRepository private constructor(
         }.asLiveData()
     }
 
-    override fun getBookmarkedCourses(): LiveData<List<ItemEntity>> {
-        TODO("Not yet implemented")
+    override fun getBookmarkedCourses(): LiveData<PagedList<ItemEntity>> {
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(4)
+            .setPageSize(4)
+            .build()
+        return LivePagedListBuilder(localDataSource.getBookmarkedCourses(), config).build()
     }
 
     override fun setCourseBookmark(course: ItemEntity, state: Boolean) =
