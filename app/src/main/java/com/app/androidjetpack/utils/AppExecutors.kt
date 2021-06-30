@@ -6,7 +6,7 @@ import androidx.annotation.VisibleForTesting
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
-class AppExecutors @VisibleForTesting constructor(
+open class AppExecutors @VisibleForTesting constructor(
     private val diskIO: Executor,
     private val networkIO: Executor,
     private val mainThread: Executor

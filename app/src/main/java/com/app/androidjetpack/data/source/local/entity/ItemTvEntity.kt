@@ -5,8 +5,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "courseentities")
-data class ItemEntity(
+@Entity(tableName = "tventities")
+data class ItemTvEntity(
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "itemId")
@@ -26,5 +26,5 @@ data class ItemEntity(
 
     @ColumnInfo(name = "bookmarked")
     var bookmarked: Boolean = false
-
 )
+

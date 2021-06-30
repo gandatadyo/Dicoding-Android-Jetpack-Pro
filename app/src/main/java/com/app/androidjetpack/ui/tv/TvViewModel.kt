@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import com.app.androidjetpack.data.MyRepository
-import com.app.androidjetpack.data.source.local.entity.ItemEntity
+import com.app.androidjetpack.data.source.local.entity.ItemTvEntity
 import com.app.androidjetpack.vo.Resource
 
 class TvViewModel(private val myRepository: MyRepository): ViewModel() {
 
-    fun getTV(): LiveData<Resource<PagedList<ItemEntity>>> = myRepository.getAllTv()
+    fun getTV(): LiveData<Resource<PagedList<ItemTvEntity>>> = myRepository.getAllTv()
 
 }

@@ -1,26 +1,17 @@
 package com.app.androidjetpack.ui.tv
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.app.androidjetpack.data.MyRepository
-import com.app.androidjetpack.data.source.local.entity.ItemEntity
 import com.app.androidjetpack.utils.DataDummy
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
 class TvViewModelTest {
-
-    private lateinit var viewModel: TvViewModel
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -28,8 +19,9 @@ class TvViewModelTest {
     @Mock
     private lateinit var myRepository: MyRepository
 
-    @Mock
-    private lateinit var observer: Observer<List<ItemEntity>>
+    private lateinit var viewModel: TvViewModel
+
+    private val dummyTVs = DataDummy.generateDummyTvs()
 
     @Before
     fun setUp() {
@@ -37,18 +29,12 @@ class TvViewModelTest {
     }
 
     @Test
-    fun getTvs(){
-        val dummyTv = DataDummy.generateDummyTvs()
-        val tvs = MutableLiveData<List<ItemEntity>>()
-        tvs.value = dummyTv
+    fun `getTVs returns success`(){
+        //TODO Test, seperti MovieViewModelTest
+    }
 
-        `when`(myRepository.getAllTv()).thenReturn(tvs)
-        val tvEntities = viewModel.getTV().value
-        verify(myRepository).getAllTv()
-        assertNotNull(tvEntities)
-        assertEquals(10, tvEntities?.size)
-
-        viewModel.getTV().observeForever(observer)
-        verify(observer).onChanged(dummyTv)
+    @Test
+    fun `getTVs returns error data is null`() {
+        //TODO
     }
 }

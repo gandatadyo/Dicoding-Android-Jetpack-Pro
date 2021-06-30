@@ -7,36 +7,36 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.androidjetpack.R
-import com.app.androidjetpack.data.source.local.entity.ItemEntity
+import com.app.androidjetpack.data.source.local.entity.ItemMovieEntity
 import com.app.androidjetpack.databinding.ItemMovieBinding
 import com.app.androidjetpack.ui.detail.DetailItemActivity
 import com.bumptech.glide.Glide
 import java.util.ArrayList
 
-class MovieAdapter: PagedListAdapter<ItemEntity, MovieAdapter.MovieViewHolder>(DIFF_CALLBACK) {
+class MovieAdapter: PagedListAdapter<ItemMovieEntity, MovieAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ItemEntity>() {
-            override fun areItemsTheSame(oldItem: ItemEntity, newItem: ItemEntity): Boolean {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ItemMovieEntity>() {
+            override fun areItemsTheSame(oldItem: ItemMovieEntity, newItem: ItemMovieEntity): Boolean {
                 return oldItem.itemId == newItem.itemId
             }
-            override fun areContentsTheSame(oldItem: ItemEntity, newItem: ItemEntity): Boolean {
+            override fun areContentsTheSame(oldItem: ItemMovieEntity, newItem: ItemMovieEntity): Boolean {
                 return oldItem == newItem
             }
         }
     }
 
-    private var listMovies = ArrayList<ItemEntity>()
+    private var listMovies = ArrayList<ItemMovieEntity>()
 
-    fun setMovies(items: List<ItemEntity>?) {
+    fun setMovies(items: List<ItemMovieEntity>?) {
         if (items == null) return
         this.listMovies.clear()
         this.listMovies.addAll(items)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val itemsAcademyBinding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MovieViewHolder(itemsAcademyBinding)
+        val itemsBinding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MovieViewHolder(itemsBinding)
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
@@ -48,7 +48,7 @@ class MovieAdapter: PagedListAdapter<ItemEntity, MovieAdapter.MovieViewHolder>(D
 
     class MovieViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
         private val urlimg = "https://image.tmdb.org/t/p/original"
-        fun bind(item: ItemEntity) {
+        fun bind(item: ItemMovieEntity) {
             with(binding) {
                 tvItemTitle.text = item.title
                 tvItemDate.text = itemView.resources.getString(R.string.info_date, item.dateItem)

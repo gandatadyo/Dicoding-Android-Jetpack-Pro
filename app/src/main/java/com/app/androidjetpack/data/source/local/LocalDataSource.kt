@@ -2,47 +2,53 @@ package com.app.androidjetpack.data.source.local
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
-import com.app.androidjetpack.data.source.local.entity.ItemEntity
-import com.app.androidjetpack.data.source.local.room.AcademyDao
+import com.app.androidjetpack.data.source.local.entity.ItemMovieEntity
+import com.app.androidjetpack.data.source.local.entity.ItemTvEntity
+import com.app.androidjetpack.data.source.local.room.MovieTvDao
+import com.app.androidjetpack.utils.SortUtils
 
-class LocalDataSource private constructor(private val mAcademyDao: AcademyDao) {
+class LocalDataSource private constructor(private val movietvDao: MovieTvDao) {
 
     companion object {
         private var INSTANCE: LocalDataSource? = null
 
-        fun getInstance(academyDao: AcademyDao): LocalDataSource =
-            INSTANCE ?: LocalDataSource(academyDao)
+        fun getInstance(movieTvDao: MovieTvDao): LocalDataSource =
+            INSTANCE ?: LocalDataSource(movieTvDao)
     }
 
-    fun getAllCourses(): DataSource.Factory<Int, ItemEntity> = mAcademyDao.getCourses()
+    // movie
 
-    fun getBookmarkedCourses(): DataSource.Factory<Int, ItemEntity> = mAcademyDao.getBookmarkedCourse()
+    fun getAllMovies(): DataSource.Factory<Int, ItemMovieEntity> = movietvDao.getMovies()
 
-
-    fun getCourseWithModules(courseId: String): LiveData<ItemEntity> =
-        mAcademyDao.getCourseWithModuleById(courseId)
-
-//    fun getAllModulesByCourse(courseId: String): LiveData<List<ModuleEntity>> =
-//        mAcademyDao.getModulesByCourseId(courseId)
-
-    fun insertCourses(courses: List<ItemEntity>) = mAcademyDao.insertCourses(courses)
-
-//    fun insertModules(modules: List<ItemEntity>) = mAcademyDao.insertModules(modules)
-
-    fun setCourseBookmark(course: ItemEntity, newState: Boolean) {
-        course.bookmarked = newState
-        mAcademyDao.updateCourse(course)
+    fun getBookmarkedMovies(sort: String): DataSource.Factory<Int, ItemMovieEntity> {
+        val query = SortUtils.getBookmarkedMovieQuery(sort)
+        return movietvDao.getBookmarkedMovie(query)
     }
 
-//    fun getModuleWithContent(moduleId: String): LiveData<ModuleEntity> =
-//        mAcademyDao.getModuleById(moduleId)
+    fun getMovieDetail(itemID: String): LiveData<ItemMovieEntity> = movietvDao.getMovieDetail(itemID)
 
-//    fun updateContent(content: String, moduleId: String) {
-//        mAcademyDao.updateModuleByContent(content, moduleId)
-//    }
+    fun insertMovies(movies: List<ItemMovieEntity>) = movietvDao.insertMovies(movies)
 
-//    fun setReadModule(module: ModuleEntity) {
-//        module.read = true
-//        mAcademyDao.updateModule(module)
-//    }
+    fun setMovieBookmark(movie: ItemMovieEntity, newState: Boolean) {
+        movie.bookmarked = newState
+        movietvDao.updateMovie(movie)
+    }
+
+    // tv
+
+    fun getAllTvs(): DataSource.Factory<Int, ItemTvEntity> = movietvDao.getTvs()
+
+    fun getBookmarkedTvs(sort: String): DataSource.Factory<Int, ItemTvEntity> {
+        val query = SortUtils.getBookmarkedTvQuery(sort)
+        return movietvDao.getBookmarkedTv(query)
+    }
+
+    fun getTvDetail(itemID: String): LiveData<ItemTvEntity> = movietvDao.getTvDetail(itemID)
+
+    fun insertTvs(tvs: List<ItemTvEntity>) = movietvDao.insertTvs(tvs)
+
+    fun setTvBookmark(tv: ItemTvEntity, newState: Boolean) {
+        tv.bookmarked = newState
+        movietvDao.updateTv(tv)
+    }
 }

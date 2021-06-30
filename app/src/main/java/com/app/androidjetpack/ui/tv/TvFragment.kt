@@ -32,7 +32,7 @@ class TvFragment : Fragment() {
             val factory = ViewModelFactory.getInstance(requireContext())
             val viewModel = ViewModelProvider(this,factory)[TvViewModel::class.java]
 
-            val academyAdapter = TvAdapter()
+            val itemAdapter = TvAdapter()
             EspressoIdlingResource.increment()
             fragmentTvBinding.loadingView.visibility = View.VISIBLE
             viewModel.getTV().observe(requireActivity(), { tvs ->
@@ -41,9 +41,9 @@ class TvFragment : Fragment() {
                         Status.LOADING -> fragmentTvBinding.loadingView.visibility = View.VISIBLE
                         Status.SUCCESS -> {
                             fragmentTvBinding.loadingView.visibility = View.GONE
-                            academyAdapter.submitList(tvs.data)
-                            academyAdapter.setTvs(tvs.data)
-                            academyAdapter.notifyDataSetChanged()
+                            itemAdapter.submitList(tvs.data)
+                            itemAdapter.setTvs(tvs.data)
+                            itemAdapter.notifyDataSetChanged()
                         }
                         Status.ERROR -> {
                             fragmentTvBinding.loadingView.visibility = View.GONE
@@ -57,7 +57,7 @@ class TvFragment : Fragment() {
             with(fragmentTvBinding.rvTv) {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
-                adapter = academyAdapter
+                adapter = itemAdapter
             }
         }
     }

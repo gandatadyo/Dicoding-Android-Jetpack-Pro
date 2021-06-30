@@ -32,7 +32,7 @@ class MovieFragment : Fragment() {
             val factory = ViewModelFactory.getInstance(requireContext())
             val viewModel = ViewModelProvider(this,factory)[MovieViewModel::class.java]
 
-            val academyAdapter = MovieAdapter()
+            val itemAdapter = MovieAdapter()
             EspressoIdlingResource.increment()
             fragmentMovieBinding.loadingView.visibility = View.VISIBLE
             viewModel.getMovies().observe(requireActivity(), { movies ->
@@ -41,8 +41,8 @@ class MovieFragment : Fragment() {
                         Status.LOADING -> fragmentMovieBinding.loadingView.visibility = View.VISIBLE
                         Status.SUCCESS -> {
                             fragmentMovieBinding.loadingView.visibility = View.GONE
-                            academyAdapter.setMovies(movies.data)
-                            academyAdapter.notifyDataSetChanged()
+                            itemAdapter.setMovies(movies.data)
+                            itemAdapter.notifyDataSetChanged()
                         }
                         Status.ERROR -> {
                             fragmentMovieBinding.loadingView.visibility = View.GONE
@@ -55,7 +55,7 @@ class MovieFragment : Fragment() {
             with(fragmentMovieBinding.rvMovie) {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
-                adapter = academyAdapter
+                adapter = itemAdapter
             }
         }
     }

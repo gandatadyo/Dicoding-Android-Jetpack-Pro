@@ -2,25 +2,24 @@ package com.app.androidjetpack.ui.movie
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import com.app.androidjetpack.data.MyRepository
-import com.app.androidjetpack.data.source.local.entity.ItemEntity
+import com.app.androidjetpack.data.source.local.entity.ItemMovieEntity
 import com.app.androidjetpack.utils.DataDummy
-import junit.framework.Assert.assertNotNull
-import org.junit.Assert.assertEquals
+import com.app.androidjetpack.vo.Resource
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
 class MovieViewModelTest  {
-
-    private lateinit var viewModel: MovieViewModel
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -28,8 +27,9 @@ class MovieViewModelTest  {
     @Mock
     private lateinit var myRepository: MyRepository
 
-    @Mock
-    private lateinit var observer: Observer<List<ItemEntity>>
+    private lateinit var viewModel: MovieViewModel
+
+    private val dummyMovies = DataDummy.generateDummyMovie()
 
     @Before
     fun setUp() {
@@ -37,18 +37,38 @@ class MovieViewModelTest  {
     }
 
     @Test
-    fun getMovies(){
-        val dummyMovie = DataDummy.generateDummyMovie()
-        val movies = MutableLiveData<List<ItemEntity>>()
-        movies.value = dummyMovie
+    fun `getMovies returns success`(){
+        val pagedList = mock<PagedList<ItemMovieEntity>>()
+        val resource = Resource.success(pagedList)
+        `when`(pagedList.loadedCount).thenReturn(5)
+        `when`(pagedList.size).thenReturn(dummyMovies.size)
 
-        `when`(myRepository.getAllMovie()).thenReturn(movies)
-        val movieEntities = viewModel.getMovies().value
+        val list = MutableLiveData<Resource<PagedList<ItemMovieEntity>>>().apply {
+            value = resource
+        }
+
+        `when`(myRepository.getAllMovie()).thenReturn(list)
+        val movies = viewModel.getMovies()
         verify(myRepository).getAllMovie()
-        assertNotNull(movieEntities)
-        assertEquals(10, movieEntities?.size)
 
-        viewModel.getMovies().observeForever(observer)
-        verify(observer).onChanged(dummyMovie)
+        assertNotNull(movies.value)
+        assertEquals(5, list.value!!.data!!.loadedCount)
+        assertEquals(dummyMovies.size, list.value!!.data!!.size)
+    }
+
+    @Test
+    fun `getMovies returns error, data is null`(){
+        val resource = Resource.error("Terjadi kesalahan", null)
+
+        val list = MutableLiveData<Resource<PagedList<ItemMovieEntity>>>().apply {
+            value = resource
+        }
+
+        `when`(myRepository.getAllMovie()).thenReturn(list)
+        val items = viewModel.getMovies()
+        verify(myRepository).getAllMovie()
+
+        assertNull(items.value?.data)
+        assertEquals(items.value!!.message, "Terjadi kesalahan")
     }
 }
