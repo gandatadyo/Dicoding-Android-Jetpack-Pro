@@ -50,15 +50,42 @@ class DetailViewModelTest {
 
     @Test
     fun `getDetailMovie returns success`() {
-        //TODO Test, pastikan setiap fungsi test juga dilakukan assertion (assertNotNull, assertEquals, dll)
-        //Test mirip detail tv returns success
-        // viewModel.itemModule untuk memanggil repository getDetailMovie belum ada,
-        // ataukah menggunakan getDetailMovie(idmovie:String) ?
+        val resource = Resource.success(dummyMovie)
+        val data = MutableLiveData<Resource<ItemMovieEntity>>().apply {
+            value = resource
+        }
+
+        `when`(myRepository.getDetailMovie(idmovie)).thenReturn(data)
+
+        viewModel.setSelectedItem(idmovie)
+        viewModel.itemMovieModule.observeForever(movieObserver)
+
+        verify(myRepository).getDetailMovie(idmovie)
+        verify(movieObserver).onChanged(resource)
+
+        assertNotNull(data.value?.data)
+        assertEquals(data.value!!.data, dummyMovie)
+        assertEquals(data.value!!.status, Status.SUCCESS)
     }
 
     @Test
     fun `getDetailMovie returns error`() {
-        //Test seperti getDetailTV returns error
+        val resource = Resource.error("Terjadi kesalahan", null)
+        val data = MutableLiveData<Resource<ItemMovieEntity>>().apply {
+            value = resource
+        }
+
+        `when`(myRepository.getDetailMovie(idmovie)).thenReturn(data)
+
+        viewModel.setSelectedItem(idmovie)
+        viewModel.itemMovieModule.observeForever(movieObserver)
+
+        verify(myRepository).getDetailMovie(idmovie)
+        verify(movieObserver).onChanged(resource)
+
+        Assert.assertNull(data.value?.data)
+        assertEquals(data.value!!.status, Status.ERROR)
+        assertEquals(data.value!!.message, "Terjadi kesalahan")
     }
 
     @Test

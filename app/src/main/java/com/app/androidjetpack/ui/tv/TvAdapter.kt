@@ -9,11 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.androidjetpack.R
 import com.app.androidjetpack.data.source.local.entity.ItemTvEntity
 import com.app.androidjetpack.databinding.ItemMovieBinding
-import com.app.androidjetpack.ui.detail.DetailItemActivity
 import com.bumptech.glide.Glide
 import java.util.ArrayList
 
-class TvAdapter: PagedListAdapter<ItemTvEntity, TvAdapter.TvViewHolder>(DIFF_CALLBACK) {
+class TvAdapter(private val detailCallback: (itemId: String, mode: String) -> Unit): PagedListAdapter<ItemTvEntity, TvAdapter.TvViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ItemTvEntity>() {
@@ -28,11 +27,11 @@ class TvAdapter: PagedListAdapter<ItemTvEntity, TvAdapter.TvViewHolder>(DIFF_CAL
 
     private var listMovies = ArrayList<ItemTvEntity>()
 
-    fun setTvs(items: List<ItemTvEntity>?) {
-        if (items == null) return
-        this.listMovies.clear()
-        this.listMovies.addAll(items)
-    }
+//    fun setTvs(items: List<ItemTvEntity>?) {
+//        if (items == null) return
+//        this.listMovies.clear()
+//        this.listMovies.addAll(items)
+//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvViewHolder {
         val itemsBinding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -40,13 +39,15 @@ class TvAdapter: PagedListAdapter<ItemTvEntity, TvAdapter.TvViewHolder>(DIFF_CAL
     }
 
     override fun onBindViewHolder(holder: TvViewHolder, position: Int) {
-        val item = listMovies[position]
-        holder.bind(item)
+        val item = getItem(position)
+        if (item != null) {
+            holder.bind(item)
+        }
     }
 
-    override fun getItemCount(): Int = listMovies.size
+//    override fun getItemCount(): Int = listMovies.size
 
-    class TvViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class TvViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
         private val urlimg = "https://image.tmdb.org/t/p/original"
         fun bind(item: ItemTvEntity) {
             with(binding) {
@@ -54,10 +55,7 @@ class TvAdapter: PagedListAdapter<ItemTvEntity, TvAdapter.TvViewHolder>(DIFF_CAL
                 tvItemDate.text = itemView.resources.getString(R.string.info_date, item.dateItem)
                 Glide.with(itemView.context).load(urlimg+item.imagePath).into(imgPoster)
                 itemView.setOnClickListener {
-                    val intent = Intent(itemView.context, DetailItemActivity::class.java)
-                    intent.putExtra(DetailItemActivity.EXTRA_ITEM, item.itemId)
-                    intent.putExtra(DetailItemActivity.EXTRA_MODE, "tv")
-                    itemView.context.startActivity(intent)
+                    detailCallback.invoke(item.itemId, "tv")
                 }
             }
         }

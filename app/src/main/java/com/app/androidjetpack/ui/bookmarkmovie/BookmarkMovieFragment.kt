@@ -1,5 +1,6 @@
 package com.app.androidjetpack.ui.bookmarkmovie
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.androidjetpack.databinding.FragmentBookmarklistBinding
+import com.app.androidjetpack.ui.detail.DetailItemActivity
 import com.app.androidjetpack.ui.movie.MovieAdapter
 import com.app.androidjetpack.utils.EspressoIdlingResource
 import com.app.androidjetpack.utils.SortUtils
@@ -32,13 +34,12 @@ class BookmarkMovieFragment : Fragment() {
             val factory = ViewModelFactory.getInstance(requireContext())
             val viewModel = ViewModelProvider(this,factory)[BookmarkMovieViewModel::class.java]
 
-            val itemAdapter = MovieAdapter()
+            val itemAdapter = MovieAdapter { itemId: String, mode: String ->showDetail(itemId,mode) }
             EspressoIdlingResource.increment()
             fragmentBookmarkBinding.loadingView.visibility = View.VISIBLE
             viewModel.getBookmarks(SortUtils.ASCENDING).observe(requireActivity(), { movies ->
                 fragmentBookmarkBinding.loadingView.visibility = View.GONE
-                itemAdapter.setMovies(movies)
-                itemAdapter.notifyDataSetChanged()
+                itemAdapter.submitList(movies)
             })
 
             with(fragmentBookmarkBinding.rvBookmark) {
@@ -47,5 +48,12 @@ class BookmarkMovieFragment : Fragment() {
                 adapter = itemAdapter
             }
         }
+    }
+
+    private fun showDetail(itemId: String, mode: String){
+        val intent = Intent(requireContext(), DetailItemActivity::class.java)
+        intent.putExtra(DetailItemActivity.EXTRA_ITEM, itemId)
+        intent.putExtra(DetailItemActivity.EXTRA_MODE, mode)
+        startActivity(intent)
     }
 }

@@ -1,5 +1,6 @@
 package com.app.androidjetpack.ui.movie
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.androidjetpack.databinding.FragmentMovieBinding
+import com.app.androidjetpack.ui.detail.DetailItemActivity
 import com.app.androidjetpack.utils.EspressoIdlingResource
 import com.app.androidjetpack.viewmodel.ViewModelFactory
 import com.app.androidjetpack.vo.Status
@@ -32,7 +34,7 @@ class MovieFragment : Fragment() {
             val factory = ViewModelFactory.getInstance(requireContext())
             val viewModel = ViewModelProvider(this,factory)[MovieViewModel::class.java]
 
-            val itemAdapter = MovieAdapter()
+            val itemAdapter = MovieAdapter { itemId: String, mode: String ->showDetail(itemId,mode) }
             EspressoIdlingResource.increment()
             fragmentMovieBinding.loadingView.visibility = View.VISIBLE
             viewModel.getMovies().observe(requireActivity(), { movies ->
@@ -41,8 +43,9 @@ class MovieFragment : Fragment() {
                         Status.LOADING -> fragmentMovieBinding.loadingView.visibility = View.VISIBLE
                         Status.SUCCESS -> {
                             fragmentMovieBinding.loadingView.visibility = View.GONE
-                            itemAdapter.setMovies(movies.data)
-                            itemAdapter.notifyDataSetChanged()
+//                            itemAdapter.setMovies(movies.data)
+//                            itemAdapter.notifyDataSetChanged()
+                            itemAdapter.submitList(movies.data)
                         }
                         Status.ERROR -> {
                             fragmentMovieBinding.loadingView.visibility = View.GONE
@@ -58,5 +61,12 @@ class MovieFragment : Fragment() {
                 adapter = itemAdapter
             }
         }
+    }
+
+    private fun showDetail(itemId: String, mode: String){
+        val intent = Intent(requireContext(), DetailItemActivity::class.java)
+        intent.putExtra(DetailItemActivity.EXTRA_ITEM, itemId)
+        intent.putExtra(DetailItemActivity.EXTRA_MODE, mode)
+        startActivity(intent)
     }
 }

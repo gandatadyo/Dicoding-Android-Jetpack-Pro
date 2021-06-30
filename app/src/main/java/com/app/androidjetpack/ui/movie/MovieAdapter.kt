@@ -13,7 +13,7 @@ import com.app.androidjetpack.ui.detail.DetailItemActivity
 import com.bumptech.glide.Glide
 import java.util.ArrayList
 
-class MovieAdapter: PagedListAdapter<ItemMovieEntity, MovieAdapter.MovieViewHolder>(DIFF_CALLBACK) {
+class MovieAdapter(private val detailCallback: (itemId: String, mode: String) -> Unit): PagedListAdapter<ItemMovieEntity, MovieAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ItemMovieEntity>() {
@@ -28,11 +28,11 @@ class MovieAdapter: PagedListAdapter<ItemMovieEntity, MovieAdapter.MovieViewHold
 
     private var listMovies = ArrayList<ItemMovieEntity>()
 
-    fun setMovies(items: List<ItemMovieEntity>?) {
-        if (items == null) return
-        this.listMovies.clear()
-        this.listMovies.addAll(items)
-    }
+//    fun setMovies(items: List<ItemMovieEntity>?) {
+//        if (items == null) return
+//        this.listMovies.clear()
+//        this.listMovies.addAll(items)
+//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val itemsBinding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -40,13 +40,15 @@ class MovieAdapter: PagedListAdapter<ItemMovieEntity, MovieAdapter.MovieViewHold
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        val item = listMovies[position]
-        holder.bind(item)
+        val item = getItem(position)
+        if (item != null) {
+            holder.bind(item)
+        }
     }
 
-    override fun getItemCount(): Int = listMovies.size
+//    override fun getItemCount(): Int = listMovies.size
 
-    class MovieViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MovieViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
         private val urlimg = "https://image.tmdb.org/t/p/original"
         fun bind(item: ItemMovieEntity) {
             with(binding) {
@@ -54,10 +56,7 @@ class MovieAdapter: PagedListAdapter<ItemMovieEntity, MovieAdapter.MovieViewHold
                 tvItemDate.text = itemView.resources.getString(R.string.info_date, item.dateItem)
                 Glide.with(itemView.context).load(urlimg+item.imagePath).into(imgPoster)
                 itemView.setOnClickListener {
-                    val intent = Intent(itemView.context, DetailItemActivity::class.java)
-                    intent.putExtra(DetailItemActivity.EXTRA_ITEM, item.itemId)
-                    intent.putExtra(DetailItemActivity.EXTRA_MODE, "movie")
-                    itemView.context.startActivity(intent)
+                    detailCallback.invoke(item.itemId, "movie")
                 }
             }
         }

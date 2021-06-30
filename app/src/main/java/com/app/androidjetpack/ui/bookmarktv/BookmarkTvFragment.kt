@@ -1,5 +1,6 @@
 package com.app.androidjetpack.ui.bookmarktv
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.androidjetpack.databinding.FragmentBookmarklistBinding
+import com.app.androidjetpack.ui.detail.DetailItemActivity
 import com.app.androidjetpack.ui.tv.TvAdapter
 import com.app.androidjetpack.utils.EspressoIdlingResource
 import com.app.androidjetpack.utils.SortUtils
@@ -32,13 +34,12 @@ class BookmarkTvFragment : Fragment() {
             val factory = ViewModelFactory.getInstance(requireContext())
             val viewModel = ViewModelProvider(this,factory)[BookmarkTvViewModel::class.java]
 
-            val itemAdapter = TvAdapter()
+            val itemAdapter = TvAdapter { itemId: String, mode: String ->showDetail(itemId,mode) }
             EspressoIdlingResource.increment()
             fragmentBookmarkBinding.loadingView.visibility = View.VISIBLE
             viewModel.getBookmarks(SortUtils.ASCENDING).observe(requireActivity(), { tvs ->
                 fragmentBookmarkBinding.loadingView.visibility = View.GONE
-                itemAdapter.setTvs(tvs)
-                itemAdapter.notifyDataSetChanged()
+                itemAdapter.submitList(tvs)
             })
 
             with(fragmentBookmarkBinding.rvBookmark) {
@@ -47,5 +48,12 @@ class BookmarkTvFragment : Fragment() {
                 adapter = itemAdapter
             }
         }
+    }
+
+    private fun showDetail(itemId: String, mode: String){
+        val intent = Intent(requireContext(), DetailItemActivity::class.java)
+        intent.putExtra(DetailItemActivity.EXTRA_ITEM, itemId)
+        intent.putExtra(DetailItemActivity.EXTRA_MODE, mode)
+        startActivity(intent)
     }
 }
