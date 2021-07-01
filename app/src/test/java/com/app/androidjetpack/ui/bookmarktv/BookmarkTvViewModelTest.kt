@@ -54,6 +54,5 @@ class BookmarkTvViewModelTest {
         assertNotNull(items.value)
         assertEquals(5, data.value!!.loadedCount)
         assertEquals(dummyMovies.size, data.value!!.size)
-
     }
 }

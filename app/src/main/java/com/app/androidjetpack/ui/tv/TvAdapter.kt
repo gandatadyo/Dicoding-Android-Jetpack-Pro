@@ -1,6 +1,5 @@
 package com.app.androidjetpack.ui.tv
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
@@ -10,7 +9,6 @@ import com.app.androidjetpack.R
 import com.app.androidjetpack.data.source.local.entity.ItemTvEntity
 import com.app.androidjetpack.databinding.ItemMovieBinding
 import com.bumptech.glide.Glide
-import java.util.ArrayList
 
 class TvAdapter(private val detailCallback: (itemId: String, mode: String) -> Unit): PagedListAdapter<ItemTvEntity, TvAdapter.TvViewHolder>(DIFF_CALLBACK) {
 
@@ -25,14 +23,6 @@ class TvAdapter(private val detailCallback: (itemId: String, mode: String) -> Un
         }
     }
 
-    private var listMovies = ArrayList<ItemTvEntity>()
-
-//    fun setTvs(items: List<ItemTvEntity>?) {
-//        if (items == null) return
-//        this.listMovies.clear()
-//        this.listMovies.addAll(items)
-//    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvViewHolder {
         val itemsBinding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TvViewHolder(itemsBinding)
@@ -44,8 +34,6 @@ class TvAdapter(private val detailCallback: (itemId: String, mode: String) -> Un
             holder.bind(item)
         }
     }
-
-//    override fun getItemCount(): Int = listMovies.size
 
     inner class TvViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
         private val urlimg = "https://image.tmdb.org/t/p/original"
@@ -60,5 +48,4 @@ class TvAdapter(private val detailCallback: (itemId: String, mode: String) -> Un
             }
         }
     }
-
 }

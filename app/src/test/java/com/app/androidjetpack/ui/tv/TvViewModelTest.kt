@@ -4,7 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 import com.app.androidjetpack.data.MyRepository
-import com.app.androidjetpack.data.source.local.entity.ItemMovieEntity
 import com.app.androidjetpack.data.source.local.entity.ItemTvEntity
 import com.app.androidjetpack.utils.DataDummy
 import com.app.androidjetpack.vo.Resource

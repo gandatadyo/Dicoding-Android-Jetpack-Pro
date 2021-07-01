@@ -1,6 +1,5 @@
 package com.app.androidjetpack.ui.movie
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
@@ -9,9 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.androidjetpack.R
 import com.app.androidjetpack.data.source.local.entity.ItemMovieEntity
 import com.app.androidjetpack.databinding.ItemMovieBinding
-import com.app.androidjetpack.ui.detail.DetailItemActivity
 import com.bumptech.glide.Glide
-import java.util.ArrayList
 
 class MovieAdapter(private val detailCallback: (itemId: String, mode: String) -> Unit): PagedListAdapter<ItemMovieEntity, MovieAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
@@ -26,14 +23,6 @@ class MovieAdapter(private val detailCallback: (itemId: String, mode: String) ->
         }
     }
 
-    private var listMovies = ArrayList<ItemMovieEntity>()
-
-//    fun setMovies(items: List<ItemMovieEntity>?) {
-//        if (items == null) return
-//        this.listMovies.clear()
-//        this.listMovies.addAll(items)
-//    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val itemsBinding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MovieViewHolder(itemsBinding)
@@ -45,8 +34,6 @@ class MovieAdapter(private val detailCallback: (itemId: String, mode: String) ->
             holder.bind(item)
         }
     }
-
-//    override fun getItemCount(): Int = listMovies.size
 
     inner class MovieViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
         private val urlimg = "https://image.tmdb.org/t/p/original"
