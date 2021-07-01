@@ -41,8 +41,6 @@ class MovieFragment : Fragment() {
                         Status.LOADING -> fragmentMovieBinding.loadingView.visibility = View.VISIBLE
                         Status.SUCCESS -> {
                             fragmentMovieBinding.loadingView.visibility = View.GONE
-//                            itemAdapter.setMovies(movies.data)
-//                            itemAdapter.notifyDataSetChanged()
                             itemAdapter.submitList(movies.data)
                         }
                         Status.ERROR -> {
