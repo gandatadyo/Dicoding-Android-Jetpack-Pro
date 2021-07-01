@@ -63,8 +63,9 @@ class DetailViewModelTest {
         verify(myRepository).getDetailMovie(idmovie)
         verify(movieObserver).onChanged(resource)
 
-        assertNotNull(data.value?.data)
-        assertEquals(data.value!!.data, dummyMovie)
+        assertNotNull(viewModel.itemMovieModule.value?.data)
+        assertEquals(viewModel.itemMovieModule.value?.data, data.value?.data)
+
         assertEquals(data.value!!.status, Status.SUCCESS)
     }
 

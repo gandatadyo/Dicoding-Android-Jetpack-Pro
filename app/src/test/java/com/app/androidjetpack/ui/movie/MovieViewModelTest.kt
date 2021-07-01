@@ -53,7 +53,7 @@ class MovieViewModelTest  {
 
         assertNotNull(movies.value)
         assertEquals(5, list.value!!.data!!.loadedCount)
-        assertEquals(dummyMovies.size, list.value!!.data!!.size)
+        assertEquals(movies.value?.data?.size, list.value?.data?.size)
     }
 
     @Test
