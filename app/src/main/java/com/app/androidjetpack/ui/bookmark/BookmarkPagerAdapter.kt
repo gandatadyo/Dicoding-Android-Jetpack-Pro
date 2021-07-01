@@ -13,7 +13,7 @@ class BookmarkPagerAdapter(private val mContext: Context, fm: FragmentManager):F
 
     companion object {
         @StringRes
-        private val TAB_TITLES = intArrayOf(R.string.movie, R.string.tvshow)
+        private val TAB_TITLES = intArrayOf(R.string.moviebookmark, R.string.tvshowbookmark)
     }
 
     override fun getCount(): Int = 2

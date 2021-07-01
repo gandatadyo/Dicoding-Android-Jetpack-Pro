@@ -78,7 +78,7 @@ class HomeActivityTest {
         onView(isRoot()).perform(ViewActions.pressBack())
 
         onView(withText("Bookmark")).perform(click())
-        onView(withText("Movie")).perform(click())
+        onView(withText("Movie Bookmark")).perform(click())
         onView(withId(R.id.rvBookmarkMovie)).check(matches(isDisplayed()))
 
         onView(withId(R.id.rvBookmarkMovie)).check(withItemCount(1))
@@ -89,5 +89,28 @@ class HomeActivityTest {
         onView(isRoot()).perform(ViewActions.pressBack())
 
         onView(withId(R.id.rvBookmarkMovie)).check(withItemCount(Matchers.lessThan(1)))
+    }
+
+    @Test
+    fun loadTvsAddDeleteFavorite() {
+        onView(withText("TV Show")).perform(click())
+        onView(withId(R.id.rvTv)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(0))
+        onView(withId(R.id.rvTv)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+        onView(withId(R.id.text_title)).check(matches(isDisplayed()))
+        onView(withId(R.id.action_bookmark)).perform(click())
+        onView(isRoot()).perform(ViewActions.pressBack())
+
+        onView(withText("Bookmark")).perform(click())
+        onView(withText("TV Show Bookmark")).perform(click())
+        onView(withId(R.id.rvBookmarkTV)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.rvBookmarkTV)).check(withItemCount(1))
+        onView(withId(R.id.rvBookmarkTV)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(0))
+        onView(withId(R.id.rvBookmarkTV)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+
+        onView(withId(R.id.action_bookmark)).perform(click())
+        onView(isRoot()).perform(ViewActions.pressBack())
+
+        onView(withId(R.id.rvBookmarkTV)).check(withItemCount(Matchers.lessThan(1)))
     }
 }

@@ -20,6 +20,9 @@
     <string name="tvshow">TV Show</string>
     <string name="bookmark">Bookmark</string>
 
+    <string name="moviebookmark">Movie Bookmark</string>
+    <string name="tvshowbookmark">TV Show Bookmark</string>
+
     <string name="info_date">Tanggal Rilis %s</string>
 
     <string name="menu_bookmark">bookmark</string>

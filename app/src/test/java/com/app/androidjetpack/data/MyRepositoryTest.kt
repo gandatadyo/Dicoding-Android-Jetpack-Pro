@@ -54,9 +54,10 @@ class MyRepositoryTest{
         myRepository = FakeMyRepository(remote, local, InstantAppExecutors())
     }
 
+    // movie
+
     @Test
     fun `getAllMovies, load from db, returns success and data is not null`() {
-
         val pagedList = Resource.success(PagedListUtil.mockPagedList(movieEntities))
         Mockito.`when`(pagedList.data?.size).thenReturn(20)
 
@@ -75,12 +76,10 @@ class MyRepositoryTest{
         assertNotNull(data.value)
         assertEquals(data.value!!.data!!.size, 20)
         assertEquals(data.value!!.status, Status.SUCCESS)
-
     }
 
     @Test
-    fun `get detail movie, load from db`() {
-
+    fun `getDetailMovie, load from db`() {
         val dbData = MutableLiveData<ItemMovieEntity>().apply {
             value = movieEntities[0]
         }
@@ -97,8 +96,7 @@ class MyRepositoryTest{
     }
 
     @Test
-    fun `get detail movie from network, returns success, and data is not null`() {
-
+    fun `getDetailMovie from network, returns success, and data is not null`() {
         val dbData = MutableLiveData<ItemMovieEntity>()
         Mockito.`when`(local.getMovieDetail(movieId)).thenReturn(dbData)
 
@@ -122,21 +120,6 @@ class MyRepositoryTest{
     }
 
     @Test
-    fun `getAllTvs, load from db, data is not null`() {
-        //TODO: Test, mirip getAllMovies load from db
-    }
-
-    @Test
-    fun `getDetailTV, load from db`() {
-        //Test, mirip get detail tv from db
-    }
-
-    @Test
-    fun `getDetailTV, load from network`() {
-        //Test, mirip get detail tv from network
-    }
-
-    @Test
     fun `get bookmarked movie from local, data is not null`() {
         val movies = PagedListUtil.mockPagedList(movieEntities.toList())
 
@@ -154,6 +137,84 @@ class MyRepositoryTest{
 
         assertNotNull(dbData.value)
         assertEquals(dbData.value!!.size, movieEntities.size)
+    }
+
+    // tv
+
+    @Test
+    fun `getAllTvs, load from db, data is not null`() {
+        val pagedList = Resource.success(PagedListUtil.mockPagedList(tvEntities))
+        Mockito.`when`(pagedList.data?.size).thenReturn(20)
+
+        val data = MutableLiveData<Resource<PagedList<ItemTvEntity>>>().apply {
+            value = pagedList
+        }
+
+        val factory = mock<DataSource.Factory<Int, ItemTvEntity>>()
+        Mockito.`when`(local.getAllTvs()).thenReturn(factory)
+
+        myRepository.getAllTv()
+        verify(local).getAllTvs()
+        verify(remote, never()).getAllTv()
+        verify(local, never()).insertTvs(any())
+
+        assertNotNull(data.value)
+        assertEquals(data.value!!.data!!.size, 20)
+        assertEquals(data.value!!.status, Status.SUCCESS)
+    }
+
+    @Test
+    fun `getDetailTV, load from db`() {
+        val dbData = MutableLiveData<ItemTvEntity>().apply {
+            value = tvEntities[0]
+        }
+        Mockito.`when`(local.getTvDetail(tvId)).thenReturn(dbData)
+
+        myRepository.getDetailTV(tvId)
+
+        verify(local).getTvDetail(tvId)
+        verify(remote, never()).getDetailTv(tvId)
+        verify(local, never()).insertTvs(any())
+
+        assertNotNull(dbData.value)
+        assertEquals(dbData.value!!.itemId, tvEntities[0].itemId)
+    }
+
+    @Test
+    fun `getDetailTV, load from network`() {
+        val dbData = MutableLiveData<ItemTvEntity>().apply {
+            value = tvEntities[0]
+        }
+        Mockito.`when`(local.getTvDetail(tvId)).thenReturn(dbData)
+
+        myRepository.getDetailTV(tvId)
+
+        verify(local).getTvDetail(tvId)
+        verify(remote, never()).getDetailTv(tvId)
+        verify(local, never()).insertTvs(any())
+
+        assertNotNull(dbData.value)
+        assertEquals(dbData.value!!.itemId, tvEntities[0].itemId)
+    }
+
+    @Test
+    fun `get bookmarked tv from local, data is not null`() {
+        val tvs = PagedListUtil.mockPagedList(tvEntities.toList())
+
+        Mockito.`when`(tvs.size).thenReturn(tvEntities.size)
+
+        val dbData = MutableLiveData<PagedList<ItemTvEntity>>().apply {
+            value = tvs
+        }
+
+        val factory = mock<DataSource.Factory<Int, ItemTvEntity>>()
+        Mockito.`when`(local.getBookmarkedTvs(SortUtils.ASCENDING)).thenReturn(factory)
+
+        myRepository.getBookmarkedTvs(SortUtils.ASCENDING)
+        verify(local).getBookmarkedTvs(SortUtils.ASCENDING)
+
+        assertNotNull(dbData.value)
+        assertEquals(dbData.value!!.size, tvEntities.size)
     }
 
 }
