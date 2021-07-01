@@ -8,21 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.app.androidjetpack.databinding.FragmentBookmarklistBinding
+import com.app.androidjetpack.databinding.FragmentBookmarkMovieBinding
 import com.app.androidjetpack.ui.detail.DetailItemActivity
 import com.app.androidjetpack.ui.movie.MovieAdapter
-import com.app.androidjetpack.utils.EspressoIdlingResource
 import com.app.androidjetpack.utils.SortUtils
 import com.app.androidjetpack.viewmodel.ViewModelFactory
 
 class BookmarkMovieFragment : Fragment() {
-    private lateinit var fragmentBookmarkBinding: FragmentBookmarklistBinding
+    private lateinit var fragmentBookmarkBinding: FragmentBookmarkMovieBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentBookmarkBinding = FragmentBookmarklistBinding.inflate(layoutInflater, container, false)
+        fragmentBookmarkBinding = FragmentBookmarkMovieBinding.inflate(layoutInflater, container, false)
         fragmentBookmarkBinding.loadingView.visibility = View.GONE
         return fragmentBookmarkBinding.root
     }
@@ -35,14 +34,13 @@ class BookmarkMovieFragment : Fragment() {
             val viewModel = ViewModelProvider(this,factory)[BookmarkMovieViewModel::class.java]
 
             val itemAdapter = MovieAdapter { itemId: String, mode: String ->showDetail(itemId,mode) }
-            EspressoIdlingResource.increment()
             fragmentBookmarkBinding.loadingView.visibility = View.VISIBLE
             viewModel.getBookmarks(SortUtils.ASCENDING).observe(requireActivity(), { movies ->
                 fragmentBookmarkBinding.loadingView.visibility = View.GONE
                 itemAdapter.submitList(movies)
             })
 
-            with(fragmentBookmarkBinding.rvBookmark) {
+            with(fragmentBookmarkBinding.rvBookmarkMovie) {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
                 adapter = itemAdapter

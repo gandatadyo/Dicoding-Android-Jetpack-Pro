@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.androidjetpack.databinding.FragmentTvBinding
 import com.app.androidjetpack.ui.detail.DetailItemActivity
-import com.app.androidjetpack.utils.EspressoIdlingResource
 import com.app.androidjetpack.viewmodel.ViewModelFactory
 import com.app.androidjetpack.vo.Status
 
@@ -35,7 +34,6 @@ class TvFragment : Fragment() {
             val viewModel = ViewModelProvider(this,factory)[TvViewModel::class.java]
 
             val itemAdapter = TvAdapter { itemId: String, mode: String ->showDetail(itemId,mode) }
-            EspressoIdlingResource.increment()
             fragmentTvBinding.loadingView.visibility = View.VISIBLE
             viewModel.getTV().observe(requireActivity(), { tvs ->
                 if (tvs != null) {

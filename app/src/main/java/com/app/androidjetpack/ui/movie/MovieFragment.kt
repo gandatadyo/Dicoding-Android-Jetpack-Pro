@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.androidjetpack.databinding.FragmentMovieBinding
 import com.app.androidjetpack.ui.detail.DetailItemActivity
-import com.app.androidjetpack.utils.EspressoIdlingResource
 import com.app.androidjetpack.viewmodel.ViewModelFactory
 import com.app.androidjetpack.vo.Status
 
@@ -35,7 +34,6 @@ class MovieFragment : Fragment() {
             val viewModel = ViewModelProvider(this,factory)[MovieViewModel::class.java]
 
             val itemAdapter = MovieAdapter { itemId: String, mode: String ->showDetail(itemId,mode) }
-            EspressoIdlingResource.increment()
             fragmentMovieBinding.loadingView.visibility = View.VISIBLE
             viewModel.getMovies().observe(requireActivity(), { movies ->
                 if (movies != null) {

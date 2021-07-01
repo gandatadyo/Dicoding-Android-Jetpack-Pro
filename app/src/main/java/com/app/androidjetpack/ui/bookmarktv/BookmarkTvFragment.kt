@@ -8,21 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.app.androidjetpack.databinding.FragmentBookmarklistBinding
+import com.app.androidjetpack.databinding.FragmentBookmarkTvBinding
 import com.app.androidjetpack.ui.detail.DetailItemActivity
 import com.app.androidjetpack.ui.tv.TvAdapter
-import com.app.androidjetpack.utils.EspressoIdlingResource
 import com.app.androidjetpack.utils.SortUtils
 import com.app.androidjetpack.viewmodel.ViewModelFactory
 
 class BookmarkTvFragment : Fragment() {
-    private lateinit var fragmentBookmarkBinding: FragmentBookmarklistBinding
+    private lateinit var fragmentBookmarkBinding: FragmentBookmarkTvBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentBookmarkBinding = FragmentBookmarklistBinding.inflate(layoutInflater, container, false)
+        fragmentBookmarkBinding = FragmentBookmarkTvBinding.inflate(layoutInflater, container, false)
         fragmentBookmarkBinding.loadingView.visibility = View.GONE
         return fragmentBookmarkBinding.root
     }
@@ -35,14 +34,13 @@ class BookmarkTvFragment : Fragment() {
             val viewModel = ViewModelProvider(this,factory)[BookmarkTvViewModel::class.java]
 
             val itemAdapter = TvAdapter { itemId: String, mode: String ->showDetail(itemId,mode) }
-            EspressoIdlingResource.increment()
             fragmentBookmarkBinding.loadingView.visibility = View.VISIBLE
             viewModel.getBookmarks(SortUtils.ASCENDING).observe(requireActivity(), { tvs ->
                 fragmentBookmarkBinding.loadingView.visibility = View.GONE
                 itemAdapter.submitList(tvs)
             })
 
-            with(fragmentBookmarkBinding.rvBookmark) {
+            with(fragmentBookmarkBinding.rvBookmarkTV) {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
                 adapter = itemAdapter
